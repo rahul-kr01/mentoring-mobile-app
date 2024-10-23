@@ -251,4 +251,18 @@ export class ProfileService {
     }
   }
 
+  async pendingRequests(){
+    const config = {
+      url: urlConstants.API_URLS.CONNECTION_REQUEST,
+      payload: {}
+    };
+    try {
+      let data: any = await this.httpService.get(config);
+      return data;
+    }
+    catch (error) {
+      return error
+    }
+  }
+
 }

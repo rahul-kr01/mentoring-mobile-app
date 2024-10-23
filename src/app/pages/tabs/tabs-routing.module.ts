@@ -23,6 +23,10 @@ const routes: Routes = [
         canActivate:[PrivateGuard]
       },
       {
+        path: CommonRoutes.REQUESTS,
+        loadChildren: () => import('./requests/requests.module').then( m => m.RequestsPageModule)
+      },    
+      {
         path: CommonRoutes.DASHBOARD,
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule),
         canActivate:[PrivateGuard]

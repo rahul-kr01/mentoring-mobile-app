@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { localKeys } from 'src/app/core/constants/localStorage.keys';
 import { LocalStorageService } from 'src/app/core/services';
+import { CommonRoutes } from 'src/global.routes';
 
 @Component({
   selector: 'app-generic-card',
@@ -10,30 +12,23 @@ import { LocalStorageService } from 'src/app/core/services';
 export class GenericCardComponent implements OnInit {
   @Input() data: any;
   @Output() onClickEvent = new EventEmitter();
-  // buttonConfig: { chatButton: boolean; requestSessionButton: boolean; };
   @Input() buttonConfig: any;
+  @Input() meta: any;
 
-  constructor(private localStorage: LocalStorageService) { }
+  constructor(private localStorage: LocalStorageService, private router: Router) { }
 
   async ngOnInit() { 
-    let user = await this.localStorage.getLocalData(localKeys.USER_DETAILS);
-    // this.buttonConfig = {
-    //   chatButton: true,
-    //   requestSessionButton: true
-    // }
+    // let user = await this.localStorage.getLocalData(localKeys.USER_DETAILS);
    }
 
   onCardClick(data) {
+    this.router.navigate([CommonRoutes.MENTOR_DETAILS, (data?.id || data?.user_id)]);
+  }
+  handleButtonClick(action: string, id) {
     let value = {
-      data: data,
-      type: 'cardSelect',
+      data: id,
+      type: action,
     }
-    this.onClickEvent.emit(value)
-  }
-  onChatButtonClick(){
-    console.log('on chat click')
-  }
-  onReqSessionButtonClick(){
-    console.log('on session button click')
+    this.onClickEvent.emit(value);
   }
 }
