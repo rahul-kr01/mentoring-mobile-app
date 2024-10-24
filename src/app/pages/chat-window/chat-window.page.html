@@ -15,6 +15,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="chat-window">
+  <div *ngIf="info.status != 'ACCEPTED'">
   <div class="chat-card">
     <div class="d-flex flex-align-items-flex-end" *ngIf="info?.status == 'REQUESTED'">
       <div class="chat-card-content">
@@ -27,8 +28,7 @@
            class="chat-pic">
     </div>
   </div>
-
-  <div  class="message-info" [ngStyle]="{'bottom': info?.is_initiator ? '100px' : '20px'}">
+  <div  class="message-info" [ngStyle]="{'bottom': info.hasOwnProperty('created_by') && info.created_by != info.user_id ? '20px' : '100px'}">
   <div class="flex flex-justify-center">
     <div class="info-container">
       <ion-icon name="information-circle"></ion-icon>
@@ -39,20 +39,24 @@
         {{ messages[info?.status]?.subText | translate: { name: info?.user_details?.name } }}
       </p>
     </div>
-    
   </div>
   <div style="display: flex;
-  justify-content: space-evenly; margin-top: 15px;" *ngIf="!info?.is_initiator">
+  justify-content: space-evenly; margin-top: 15px;" *ngIf="info.created_by != info.user_id">
     <ion-button size="medium" color="light" (click)="acceptRequest()">
-      <ion-icon name="checkmark-outline" color="success"></ion-icon> Accept
+      <ion-icon name="checkmark-outline" color="success"></ion-icon> {{'ACCEPT' | translate}}
       </ion-button>
-      <ion-button size="medium" color="light" (click)="rejectRequest()">
-        <ion-icon name="close-outline" color="danger"></ion-icon>  Reject
+      <ion-button size="medium" color="light" (click)="rejectConfirmation()">
+        <ion-icon name="close-outline" color="danger"></ion-icon>  {{'REJECT' | translate}}
         </ion-button>
   </div>
   </div>
+  </div>
+
+  <div *ngIf="info.status == 'ACCEPTED'">
+    <h1>Load library </h1>
+    </div>
 </ion-content>
-<ion-footer *ngIf="info?.is_initiator"> 
+<ion-footer *ngIf="info.created_by === info.user_id  && info.status != 'ACCEPTED'"> 
   <ion-toolbar>
     <div  class="flex-box ">
       <ion-input type="text" placeholder="Type a message..." [(ngModel)]="message"
