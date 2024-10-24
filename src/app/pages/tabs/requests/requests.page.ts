@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProfileService } from 'src/app/core/services/profile/profile.service';
-import { CommonRoutes } from 'src/global.routes';
+import { urlConstants } from 'src/app/core/constants/urlConstants';
+import { HttpService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-requests',
@@ -25,8 +24,8 @@ export class RequestsPage implements OnInit {
     }]
   data: any;
 
-  constructor(private router: Router,
-    private profileSevice: ProfileService
+  constructor(
+    private httpService: HttpService
   ) { }
 
   ngOnInit() { 
@@ -38,8 +37,17 @@ export class RequestsPage implements OnInit {
   }
 
   async pendingRequest(){
-    let data = await this.profileSevice.pendingRequests();
-    this.data = data ? data.result.data : '';
+    const config = {
+      url: urlConstants.API_URLS.CONNECTION_REQUEST
+    };
+    try {
+      let data: any = await this.httpService.get(config);
+      this.data = data ? data.result.data : '';
+      return data;
+    }
+    catch (error) {
+      return error
+    }
   }
 
 }
