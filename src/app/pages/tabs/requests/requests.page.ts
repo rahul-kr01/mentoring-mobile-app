@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
 import { HttpService } from 'src/app/core/services';
+import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants'
 
 @Component({
   selector: 'app-requests',
@@ -16,12 +17,7 @@ export class RequestsPage implements OnInit {
     notification: false,
   };
   segmentType = 'slot-requests';
-  buttonConfig = [
-    {
-      label:'VIEW_MESSAGE',
-      action:'viewMessage',
-      color:'primary',
-    }]
+  buttonConfig = CHAT_MESSAGES.GENERIC_CARD_REQUEST_BTN_CONFIG;
   data: any;
 
   constructor(
