@@ -45,12 +45,12 @@ export class MentorSearchDirectoryPage implements OnInit {
   showSelectedCriteria: any;
   buttonConfig = [
     {
-      label:'Chat',
+      label:'CHAT',
       action:'chat',
       color:'light'
     },
     {
-      label:'Request session',
+      label:'REQUEST_SESSION',
       action:'requestSession',
       color:'primary'
     }]

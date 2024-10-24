@@ -45,12 +45,12 @@ export class MentorDirectoryPage implements OnInit {
   data: any;
   buttonConfig = [
     {
-      label:'Chat',
+      label:'CHAT',
       action:'chat',
       color:'light'
     },
     {
-      label:'Request session',
+      label:'REQUEST_SESSION',
       action:'requestSession',
       color:'primary'
     }]

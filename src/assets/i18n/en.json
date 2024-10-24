@@ -287,5 +287,8 @@
     "SLOT_REQUESTS": "Slot requests",
     "MESSAGE_REQUESTS": "Message requests",
     "SENT": "Sent",
-    "RECEIVED": "Received"
+    "RECEIVED": "Received",
+    "VIEW_MESSAGE": "View Message",
+    "REQUEST_SESSION": "Request session",
+    "CHAT": "Chat"
 }

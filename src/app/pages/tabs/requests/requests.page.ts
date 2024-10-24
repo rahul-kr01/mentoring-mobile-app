@@ -19,7 +19,7 @@ export class RequestsPage implements OnInit {
   segmentType = 'slot-requests';
   buttonConfig = [
     {
-      label:'View Message',
+      label:'VIEW_MESSAGE',
       action:'viewMessage',
       color:'primary',
     }]
