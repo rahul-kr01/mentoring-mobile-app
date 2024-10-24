@@ -15,5 +15,6 @@ export const PAGE_IDS = {
   register: "REGISTER_PAGE",
   resetPassword: "RESET_PASSWORD_PAGE",
   otp: "OTP_PAGE",
-  editProfile: "EDIT_PROFILE"
+  editProfile: "EDIT_PROFILE",
+  requests: "REQUESTS"
 };

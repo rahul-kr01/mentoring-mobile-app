@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
 import { paginatorConstants } from 'src/app/core/constants/paginatorConstants';
 import { ToastService, UtilService } from 'src/app/core/services';
 import { FormService } from 'src/app/core/services/form/form.service';
@@ -43,7 +44,7 @@ export class MentorSearchDirectoryPage implements OnInit {
   limit: any;
   chips = [];
   showSelectedCriteria: any;
-  buttonConfig = { chatButton: true, requestSessionButton: true };
+  buttonConfig = CHAT_MESSAGES.GENERIC_CARD_MENTOR_DIRECTORY_BTN_CONFIG;
 
   constructor(
     private router: Router,
