@@ -285,5 +285,13 @@
     "ENTER_MIN_CHARACTER": "Please enter at least three characters to search.",
     "MY_CONNECTIONS": "My connections",
     "SEARCH_RESULTS_NOT_FOUND": "Search results not found",
-    "NO_RESULT_SUB_HEADER": "Looks like we couldn’t find what you were looking for, try searching for something else."
+    "NO_RESULT_SUB_HEADER": "Looks like we couldn’t find what you were looking for, try searching for something else.",
+    "REQUESTS": "Requests",
+    "SLOT_REQUESTS": "Slot requests",
+    "MESSAGE_REQUESTS": "Message requests",
+    "SENT": "Sent",
+    "RECEIVED": "Received",
+    "VIEW_MESSAGE": "View Message",
+    "REQUEST_SESSION": "Request session",
+    "CHAT": "Chat"
 }

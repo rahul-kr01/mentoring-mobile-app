@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonInfiniteScroll } from '@ionic/angular';
+import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
 import {
   HttpService,
@@ -43,6 +44,7 @@ export class MentorDirectoryPage implements OnInit {
   directory: boolean = true;
   selectedChips: boolean = false;
   data: any;
+  buttonConfig = CHAT_MESSAGES.GENERIC_CARD_MENTOR_DIRECTORY_BTN_CONFIG;
 
   constructor(
     private router: Router,

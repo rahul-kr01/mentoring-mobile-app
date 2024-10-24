@@ -17,5 +17,6 @@ export const PAGE_IDS = {
   otp: "OTP_PAGE",
   editProfile: "EDIT_PROFILE",
   myConnections: "MY_CONNECTIONS",
-  mentorSearchDirectory: "MENTOR_SEARCH_DIRECTORY"
+  mentorSearchDirectory: "MENTOR_SEARCH_DIRECTORY",
+  requests: "REQUESTS"
 };

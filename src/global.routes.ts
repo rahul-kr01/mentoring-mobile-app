@@ -37,4 +37,5 @@ export class CommonRoutes {
     public static MENTOR_SEARCH_DIRECTORY = 'mentor-search-directory'
     public static GENERIC_LIST = 'generic-list'
     public static MY_CONNECTIONS = 'my-connections'
+    public static REQUESTS = 'requests'
 }

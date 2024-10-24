@@ -1,37 +1,48 @@
 .generic-card{
-  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  cursor: pointer;
-}
-ion-button{
-  --background: var(--white);
-  color: var(--ion-color-primary);
-  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-p {
-  color: gray;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+    cursor: pointer;
+  }
+  p {
+    color: var(--dark-gray);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .columns{
+    --ion-grid-column-padding: 0;
+  }
+  .profile-img {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .button-container {
+    justify-content: space-between;
+    width: auto;
+  }
+  
+  .button-text::part(native){
+    --ion-color-contrast: var(--ion-color-primary);
+  }
 
-.columns{
-  --ion-grid-column-padding: 0;
-}
-.profile-img {
-  width: 80% !important;
-  height: auto;
-  object-fit: cover;
-}
+  .generic-card-header{
+    background-color: var(--light-gray);
+  }
 
-.button-container {
-  justify-content: space-between;
-  width: auto;
-}
+  .rotate-icon-receive {
+    transform: rotate(320deg);
+  }
 
-.chat-span {
-  padding-left: 60%;
-  padding-right: 0;
-}
+  .max-width-70{
+    max-width: 75% !important;
+  }
+
+  .max-width-50{
+    max-width: 50%;
+  }
+
+  .rotate-icon-sent {
+    transform: rotate(130deg);
+  }
