@@ -32,7 +32,7 @@
             [color]="button?.color"
             (click)="handleButtonClick(button?.action, (data?.id || data?.user_id)); $event.stopPropagation()"
           >
-            {{ button?.label }}
+            {{ button?.label | translate}}
           </ion-button>
         </div>
       </ion-col>
