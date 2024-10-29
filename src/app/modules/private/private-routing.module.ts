@@ -6,6 +6,7 @@ import { PrivateGuard } from 'src/app/core/guards/private.guard';
 import { PAGE_IDS } from 'src/app/core/constants/page.ids';
 import { AllowPageAccess } from 'src/app/core/guards/allowPageAccess/allowPageAccess.guard';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
+import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
 
 const routes: Routes = [
   {
@@ -132,7 +133,8 @@ const routes: Routes = [
         canActivate: [PrivateGuard],
         data: {
           pageId: PAGE_IDS.mentorSearchDirectory,
-          placeholder: 'Search for mentors'
+          placeholder: 'Search for mentors',
+          button_config: CHAT_MESSAGES.GENERIC_CARD_MENTOR_DIRECTORY_BTN_CONFIG
         }
       },
       {
@@ -143,7 +145,8 @@ const routes: Routes = [
           pageId: PAGE_IDS.myConnections,
           placeholder: 'Search for connections',
           filterType: 'mentor',
-          url: urlConstants.API_URLS.MENTORS_DIRECTORY_LIST
+          url: urlConstants.API_URLS.MENTOR_AND_MENTEE_CONNECTIONS,
+          button_config: CHAT_MESSAGES.GENERIC_CARD_MY_CONNECTION_BTN_CONFIG
         }
       },
       {

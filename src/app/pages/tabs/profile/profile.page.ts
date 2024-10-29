@@ -52,6 +52,10 @@ public buttonConfig = {
     {
       label: "EDIT_PROFILE",
       action: "edit"
+    },
+    {
+      label: "REQUEST_SESSION",
+      action: "requestSession"
     }
   ]
 }

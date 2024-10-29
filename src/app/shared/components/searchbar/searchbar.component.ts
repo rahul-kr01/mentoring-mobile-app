@@ -11,13 +11,12 @@ export class SearchbarComponent implements OnInit {
   @Input() data: any;
   @Input() overlayChip: any;
   @Output() outputData = new EventEmitter();
-  @Input() valueFromParent: string;
+  @Input() valueFromParent: any;
   isOpen = false;
   criteriaChipSubscription: any;
   criteriaChip: any;
   showSelectedCriteria: any;
   searchText: any;
-  selectedChipLabel: any;
 
   constructor(
     private utilService: UtilService,

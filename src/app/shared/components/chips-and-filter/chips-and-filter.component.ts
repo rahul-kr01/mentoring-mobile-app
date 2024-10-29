@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-chips-and-filter',
@@ -10,7 +10,7 @@ export class ChipsAndFilterComponent implements OnInit {
   @Output() filterClick = new EventEmitter();
   @Output() removeFilterChip = new EventEmitter();
   @Input() selectedFilters:  any;
-  @Output() sendChildValue: EventEmitter<string> = new EventEmitter<string>();
+  @Output() sendChildValue = new EventEmitter();
 
   constructor() { }
 
@@ -18,8 +18,8 @@ export class ChipsAndFilterComponent implements OnInit {
   }
 
   closeCriteriaChip(){
-    this.searchAndCriteriaData = null;
     this.sendChildValue.emit(this.searchAndCriteriaData);
+    this.searchAndCriteriaData = '';
   }
 
   removeChip(chipValue,index){

@@ -1,7 +1,7 @@
 <app-page-header [config]="headerConfig">
     <app-searchbar *ngIf="routeData && overlayChips" [data]="routeData" [overlayChip]="overlayChips" [receivedData]="criteriaChipEvent" (outputData)="searchResults($event)" [valueFromParent]="valueFromChipAndFilter"></app-searchbar>
 </app-page-header>
-<app-chips-and-filter *ngIf="routeData || searchAndCriterias" [selectedFilters]="chips" [searchAndCriteriaData]="searchAndCriterias" (removeFilterChip)="removeChip($event)" (filterClick)="onClickFilter()" (sendChildValue)="valueFromChipAndFilter = $event"></app-chips-and-filter>
+<app-chips-and-filter *ngIf="routeData || searchAndCriterias" [selectedFilters]="chips" [searchAndCriteriaData]="searchAndCriterias" (removeFilterChip)="removeChip($event)" (filterClick)="onClickFilter()" (sendChildValue)="eventHandler($event)"></app-chips-and-filter>
 
 <ion-content>
   <ion-row>
@@ -24,7 +24,7 @@
   </ion-row>
   <ion-row class="d-flex ">
       <ion-col  *ngFor="let value of mentorList" padding sizeXs="12" sizeSm="12" sizeMd="6" sizeLg="4" align-self-stretch>
-        <app-generic-card [data]="value" (onClickEvent)="eventAction($event)"></app-generic-card>
+        <app-generic-card [data]="value" (onClickEvent)="eventAction($event)" [buttonConfig]="buttonConfig"></app-generic-card>
       </ion-col>
   </ion-row>
   <div *ngIf="!totalCount && isLoaded">

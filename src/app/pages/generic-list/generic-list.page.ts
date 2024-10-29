@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
+import { FILTER_ROLES } from 'src/app/core/constants/formConstant';
 import { paginatorConstants } from 'src/app/core/constants/paginatorConstants';
 import { HttpService, UtilService } from 'src/app/core/services';
 import { FormService } from 'src/app/core/services/form/form.service';
@@ -22,8 +24,7 @@ export class GenericListPage implements OnInit {
   pageSizeOptions = paginatorConstants.pageSizeOptions;
 
   public headerConfig: any = {
-    // backButton: true,
-    // label: 'MY_CONNECTIONS',
+    menu: true,
     color: 'primary',
     headerColor: 'primary',
   };
@@ -49,6 +50,7 @@ export class GenericListPage implements OnInit {
   criteriaChipEvent: any;
   enableMentorButton: boolean = false;
   valueFromChipAndFilter: any;
+  buttonConfig: any;
 
   constructor(private route: ActivatedRoute,
     private httpService: HttpService,
@@ -63,6 +65,7 @@ export class GenericListPage implements OnInit {
     this.route.data.subscribe(data => {
       this.routeData = data;
       this.action(this.routeData);
+      this.buttonConfig = this.routeData.button_config;
     });
     this.filterListData(this.routeData.filterType);
     this.getData(this.routeData);
@@ -78,7 +81,10 @@ export class GenericListPage implements OnInit {
   }
   async getData(data){
     let response = await this.httpService.get({
-      url: this.routeData.url + (this.page ? this.page : '')+ '&limit=' + (this.pageSize ? this.pageSize : '') +  '&search=' + (data?.headerData?.searchText ? btoa(data.headerData.searchText) : '') + '&directory=false'+ '&' + (this.urlQueryData ? this.urlQueryData: '') + '&search_on=' + (data?.headerData?.criterias?.name ? data?.headerData?.criterias?.name : '')
+      url: this.routeData.url + (this.page ? this.page : '')+ 
+      '&limit=' + (this.pageSize ? this.pageSize : '') +  
+      '&search=' + (data?.headerData?.searchText ? btoa(data.headerData.searchText) : '') + '&' + (this.urlQueryData ? this.urlQueryData: '') + 
+      '&search_on=' + (data?.headerData?.criterias?.name ? data?.headerData?.criterias?.name : '')
     })
     this.isLoaded = true;
     this.searchAndCriterias = { ...this.searchAndCriterias, result: response };
@@ -120,6 +126,8 @@ export class GenericListPage implements OnInit {
     const obj = {filterType: filterType, org: true};
     let data = await this.formService.filterList(obj);
     this.filterData = await this.utilService.transformToFilterData(data, obj);
+    const filterRoles = FILTER_ROLES;
+    this.filterData.unshift(filterRoles);
   }
   extractLabels(data) {
     this.chips = [];
@@ -174,11 +182,6 @@ export class GenericListPage implements OnInit {
     this.getData(event)
   }
 
-  // removeCriteriaChip(event){
-  //   console.log('event :',event);
-  //   this.criteriaChipEvent = event;
-  // }
-
   action(event) {
     if(event && event.filterType){
       switch (event.filterType) {
@@ -201,6 +204,10 @@ export class GenericListPage implements OnInit {
         this.router.navigate([CommonRoutes.MENTOR_DETAILS, event?.data?.id]);
         break;
     }
+  }
+
+  eventHandler(event: string) {
+    this.valueFromChipAndFilter = event;
   }
   
 }

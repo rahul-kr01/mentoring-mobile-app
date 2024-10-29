@@ -65,6 +65,7 @@ export const urlConstants = {
         UPDATE_LANGUAGE: "/user/v1/user/setLanguagePreference",
         LOGIN_ACTIVITY: "/user/v1/account/sessions",
         ENTITY_LIST: "/mentoring/v1/entity/list?",
-        CONNECTION_REQUEST: "/mentoring/v1/connections/pending"
+        CONNECTION_REQUEST: "/mentoring/v1/connections/pending",
+        MENTOR_AND_MENTEE_CONNECTIONS: "/mentoring/v1/connections/list?"
     }
 };
