@@ -49,7 +49,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
-    canActivate: [AllowPageAccess],
+    // canActivate: [AllowPageAccess],
     data: {
       pageId: PAGE_IDS.landing
     }

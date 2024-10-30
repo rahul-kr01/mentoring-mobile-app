@@ -40,8 +40,7 @@
       </p>
     </div>
   </div>
-  <div style="display: flex;
-  justify-content: space-evenly; margin-top: 15px;" *ngIf="info.created_by != info.user_id">
+  <div class="action-buttons" *ngIf="info?.status != 'REJECTED' && info.created_by != info.user_id">
     <ion-button size="medium" color="light" (click)="acceptRequest()">
       <ion-icon name="checkmark-outline" color="success"></ion-icon> {{'ACCEPT' | translate}}
       </ion-button>
@@ -58,13 +57,8 @@
 </ion-content>
 <ion-footer *ngIf="info.created_by === info.user_id  && info.status != 'ACCEPTED'"> 
   <ion-toolbar>
-    <div  class="flex-box ">
-      <ion-input type="text" placeholder="Type a message..." [(ngModel)]="message"
-                 style="    border-radius: 10px;
-                 border: 1px solid #ccc;
-                 padding: 8px;
-                 padding: 0px 10px !important;
-                 margin: 0px 10px !important;"></ion-input>
+    <div  class="flex-box "> 
+      <ion-input type="text" placeholder="Type a message..." [(ngModel)]="message" class="message-input" [maxlength]="messageLimit"></ion-input>
     <ion-fab-button size="small" (click)="sendRequest()" style="width: 50px; height: 40px;">
       <ion-icon name="send" style="padding: 10px;"></ion-icon>
     </ion-fab-button>

@@ -295,5 +295,13 @@
     "REJECTED_MESSAGE_REQ_INFO_TITLE":"You have rejected {{name}}'s message request.",
     "REJECTED_MESSAGE_REQ_INFO_SUB_TITLE":"You can no longer send messages to {{name}}",
     "RECIEVED_MESSAGE_REQ_INFO_TITLE":"{{name}} wants to send you a message",
-    "RECIEVED_MESSAGE_REQ_INFO_SUB_TITLE":"If you accept, {{name}} will also be added to your connections."
+    "RECIEVED_MESSAGE_REQ_INFO_SUB_TITLE":"If you accept, {{name}} will also be added to your connections.",
+    "REQUESTS": "Requests",
+    "SLOT_REQUESTS": "Slot requests",
+    "MESSAGE_REQUESTS": "Message requests",
+    "SENT": "Sent",
+    "RECEIVED": "Received",
+    "VIEW_MESSAGE": "View Message",
+    "REQUEST_SESSION": "Request session",
+    "CHAT": "Chat"
 }

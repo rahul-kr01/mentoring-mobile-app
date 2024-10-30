@@ -52,5 +52,19 @@
         }
     }
 }
+
+.message-input{
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    padding: 0px 10px !important;
+    margin: 0px 10px !important;
+}
+
+.action-buttons{
+    display: flex;
+    justify-content: space-evenly; 
+    margin-top: 15px;
+}
 }
 

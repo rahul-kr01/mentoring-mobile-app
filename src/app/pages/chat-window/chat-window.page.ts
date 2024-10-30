@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
 import { HttpService, ToastService } from 'src/app/core/services';
-import { CHAT_MESSAGES } from '../../core/constants/chatConstants';
 
 @Component({
   selector: 'app-chat-window',
@@ -16,8 +16,8 @@ export class ChatWindowPage implements OnInit {
     menu: false,
     headerColor: 'primary',
   };
-  isRequested:string;
   id;
+  messageLimit = CHAT_MESSAGES.MESSAGE_TEXT_LIMIT;
 
   message : string = "Hi, I would like to connect with you.";
   info :any ={};
@@ -30,7 +30,6 @@ export class ChatWindowPage implements OnInit {
     private translate : TranslateService
   ) { 
     routerParams.params.subscribe(parameters =>{
-      console.log(parameters,"parameters");
       this.id = parameters?.id;
     })
   }
@@ -48,21 +47,19 @@ export class ChatWindowPage implements OnInit {
     }
     this.httpService.post(payload).then(resp =>{
       this.info = resp?.result;
-      if(resp?.result?.status && resp?.result?.status == 'REQUESTED'){
-        this.isRequested = resp?.result?.status;
+      if(resp?.result?.status == 'REQUESTED'){
         this.message = '';
-      }else{
-        this.info.status =  'PENDING';
       }
+      this.info.status = !resp?.result?.status ?  'PENDING' : resp?.result?.status;
       if(this.info.created_by === this.info.user_id){
         this.messages= CHAT_MESSAGES.INITIATOR
       }else{
-        this.messages= CHAT_MESSAGES.RECEIVER
+        this.messages= CHAT_MESSAGES.RECEIVER;
       }
     })
   }
   sendRequest(){
-    if(this.isRequested == 'REQUESTED'){
+    if(this.info.status == 'REQUESTED'){
       this.toast.showToast('MULTIPLE_MESSAGE_REQ','danger')
       return;
     }
@@ -74,7 +71,6 @@ export class ChatWindowPage implements OnInit {
       }
     }
     this.httpService.post(payload).then(resp =>{
-      console.log(resp,"resp");
       this.info.status = "REQUESTED"
       this.getConnectionInfo();
     })
@@ -87,7 +83,6 @@ export class ChatWindowPage implements OnInit {
       }
     }
     this.httpService.post(payload).then(resp =>{
-      console.log(resp,"resp");
       this.info.status = "ACCEPTED"
     })
   }
@@ -129,7 +124,8 @@ export class ChatWindowPage implements OnInit {
       }
     }
     this.httpService.post(payload).then(resp =>{
-      this.isRequested ='REJECTED';
+      this.info.status = 'REJECTED';
+      this.messages = CHAT_MESSAGES.RECEIVER;
       this.toast.showToast('REJECTED_MESSAGE_REQ','danger')
     })
   }

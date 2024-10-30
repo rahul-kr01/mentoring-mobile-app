@@ -1,0 +1,48 @@
+.generic-card{
+    cursor: pointer;
+  }
+  p {
+    color: var(--dark-gray);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .columns{
+    --ion-grid-column-padding: 0;
+  }
+  .profile-img {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .button-container {
+    justify-content: space-between;
+    width: auto;
+  }
+  
+  .button-text::part(native){
+    --ion-color-contrast: var(--ion-color-primary);
+  }
+
+  .generic-card-header{
+    background-color: var(--light-gray);
+  }
+
+  .rotate-icon-receive {
+    transform: rotate(320deg);
+  }
+
+  .max-width-70{
+    max-width: 75% !important;
+  }
+
+  .max-width-50{
+    max-width: 50%;
+  }
+
+  .rotate-icon-sent {
+    transform: rotate(130deg);
+  }

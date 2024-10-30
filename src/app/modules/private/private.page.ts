@@ -111,7 +111,10 @@ export class PrivatePage implements OnInit {
          if(userDetails) {
            this.profile.getUserRole(userDetails)
            this.adminAccess = userDetails.permissions ? this.permissionService.hasAdminAcess(this.actionsArrays,userDetails?.permissions) : false;
-         }
+           if(this.profile?.isMentor){
+            this.appPages.splice(2, 0,{ title: 'REQUESTS', action: "requests", icon: 'chatbubble-ellipses', class:"hide-on-small-screen", url: CommonRoutes.TABS+'/'+CommonRoutes.REQUESTS, pageId: PAGE_IDS.requests })
+          }
+          }
          this.getUser();
        })
      },0)
