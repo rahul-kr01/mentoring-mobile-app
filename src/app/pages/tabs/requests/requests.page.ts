@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
 import { HttpService } from 'src/app/core/services';
-import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants'
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { CommonRoutes } from 'src/global.routes';
 
 @Component({
   selector: 'app-requests',
@@ -24,6 +25,7 @@ export class RequestsPage implements OnInit {
   constructor(
     private httpService: HttpService,
     private route: ActivatedRoute,
+    private router : Router
   ) { }
 
   ngOnInit() { 
@@ -51,4 +53,11 @@ export class RequestsPage implements OnInit {
     }
   }
 
+  onCardClick(event){
+    switch (event.type) {
+      case 'viewMessage':
+        this.router.navigate([CommonRoutes.CHAT, event.data]);
+        break;
+    }
+  }
 }

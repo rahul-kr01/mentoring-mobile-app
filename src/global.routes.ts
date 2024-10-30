@@ -38,4 +38,5 @@ export class CommonRoutes {
     public static GENERIC_LIST = 'generic-list'
     public static MY_CONNECTIONS = 'my-connections'
     public static REQUESTS = 'requests'
+    public static CHAT = 'chat'
 }

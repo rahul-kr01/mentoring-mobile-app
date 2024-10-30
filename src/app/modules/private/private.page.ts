@@ -26,7 +26,6 @@ export class PrivatePage implements OnInit {
    { title: 'MENTORS', action: "mentor-directory", icon: 'people', class:"hide-on-small-screen", url: CommonRoutes.TABS+'/'+CommonRoutes.MENTOR_DIRECTORY, pageId: PAGE_IDS.mentorDirectory},
    { title: 'MY_CONNECTIONS', action: 'my-connections', icon: 'person-add', url: CommonRoutes.MY_CONNECTIONS, pageId: PAGE_IDS.myConnections},
    { title: 'DASHBOARD', action: "dashboard", icon: 'stats-chart', class:"hide-on-small-screen", url: CommonRoutes.TABS+'/'+CommonRoutes.DASHBOARD, pageId: PAGE_IDS.dashboard },
-   { title: 'REQUESTS', action: "requests", icon: 'chatbubble-ellipses', class:"hide-on-small-screen", url: CommonRoutes.TABS+'/'+CommonRoutes.REQUESTS, pageId: PAGE_IDS.requests },
    { title: 'HELP', action: "help", icon: 'help-circle', url: CommonRoutes.HELP, pageId: PAGE_IDS.help},
    { title: 'FAQ', action: "faq", icon: 'alert-circle', url: CommonRoutes.FAQ, pageId: PAGE_IDS.faq},
    { title: 'HELP_VIDEOS', action: "help videos", icon: 'videocam',url: CommonRoutes.HELP_VIDEOS, pageId: PAGE_IDS.helpVideos },
@@ -113,7 +112,10 @@ export class PrivatePage implements OnInit {
          if(userDetails) {
            this.profile.getUserRole(userDetails)
            this.adminAccess = userDetails.permissions ? this.permissionService.hasAdminAcess(this.actionsArrays,userDetails?.permissions) : false;
-         }
+           if(this.profile?.isMentor){
+            this.appPages.splice(2, 0,{ title: 'REQUESTS', action: "requests", icon: 'chatbubble-ellipses', class:"hide-on-small-screen", url: CommonRoutes.TABS+'/'+CommonRoutes.REQUESTS, pageId: PAGE_IDS.requests })
+          }
+          }
          this.getUser();
        })
      },0)

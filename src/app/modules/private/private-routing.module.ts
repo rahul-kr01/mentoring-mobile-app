@@ -153,6 +153,11 @@ const routes: Routes = [
         }
       },
       {
+        path: 'chat/:id',
+        loadChildren: () => import('../../pages/chat-window/chat-window.module').then(m => m.ChatWindowPageModule),
+        canActivate: [PrivateGuard]
+      },
+      {
         path: '',
         redirectTo: '',
         pathMatch: 'full',

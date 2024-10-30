@@ -1,4 +1,5 @@
 export const CHAT_MESSAGES = {
+    MESSAGE_TEXT_LIMIT: 160,
     INITIATOR: {
         PENDING: {
             title: `FIRST_MSG_REQ_INFO_TITLE`,

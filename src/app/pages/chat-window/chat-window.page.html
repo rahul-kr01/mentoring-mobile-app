@@ -1,0 +1,67 @@
+<ion-header class="header">
+  <ion-toolbar color="{{headerConfig?.headerColor}}">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <div class="flex-box">
+        <img [src]="info?.user_details?.image || '../../../../assets/prof-img/user.png'" alt="Profile Picture" class="profile-pic">
+        <div class="d-flex flex-column">
+          <span style="font-weight: bold;">{{info?.user_details?.name}}</span>
+          <span style="font-size: 12px;">{{info?.user_details?.user_roles}}</span>
+        </div>
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="chat-window">
+  <div *ngIf="info.status != 'ACCEPTED'">
+  <div class="chat-card">
+    <div class="d-flex flex-align-items-flex-end" *ngIf="info?.status == 'REQUESTED'">
+      <div class="chat-card-content">
+       {{info?.meta?.message}}
+        <span>
+         {{info.created_at | date : 'hh:mm a'}}
+        </span>
+      </div>
+      <img [src]="info?.user_details?.image || '../../../../assets/prof-img/user.png'" alt="Profile Picture" 
+           class="chat-pic">
+    </div>
+  </div>
+  <div  class="message-info" [ngStyle]="{'bottom': info.hasOwnProperty('created_by') && info.created_by != info.user_id ? '20px' : '100px'}">
+  <div class="flex flex-justify-center">
+    <div class="info-container">
+      <ion-icon name="information-circle"></ion-icon>
+      <span>
+        {{ messages[info?.status]?.title | translate: { name: info?.user_details?.name } }}
+      </span>
+      <p>
+        {{ messages[info?.status]?.subText | translate: { name: info?.user_details?.name } }}
+      </p>
+    </div>
+  </div>
+  <div class="action-buttons" *ngIf="info?.status != 'REJECTED' && info.created_by != info.user_id">
+    <ion-button size="medium" color="light" (click)="acceptRequest()">
+      <ion-icon name="checkmark-outline" color="success"></ion-icon> {{'ACCEPT' | translate}}
+      </ion-button>
+      <ion-button size="medium" color="light" (click)="rejectConfirmation()">
+        <ion-icon name="close-outline" color="danger"></ion-icon>  {{'REJECT' | translate}}
+        </ion-button>
+  </div>
+  </div>
+  </div>
+
+  <div *ngIf="info.status == 'ACCEPTED'">
+    <h1>Load library </h1>
+    </div>
+</ion-content>
+<ion-footer *ngIf="info.created_by === info.user_id  && info.status != 'ACCEPTED'"> 
+  <ion-toolbar>
+    <div  class="flex-box "> 
+      <ion-input type="text" placeholder="Type a message..." [(ngModel)]="message" class="message-input" [maxlength]="messageLimit"></ion-input>
+    <ion-fab-button size="small" (click)="sendRequest()" style="width: 50px; height: 40px;">
+      <ion-icon name="send" style="padding: 10px;"></ion-icon>
+    </ion-fab-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
