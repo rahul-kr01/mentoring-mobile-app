@@ -293,5 +293,6 @@
     "RECEIVED": "Received",
     "VIEW_MESSAGE": "View Message",
     "REQUEST_SESSION": "Request session",
-    "CHAT": "Chat"
+    "CHAT": "Chat",
+    "EXPLORE_MENTORS": "Explore mentors"
 }
