@@ -36,4 +36,5 @@ export class CommonRoutes {
     public static LOGIN_ACTIVITY = 'login-activity'
     public static MENTOR_SEARCH_DIRECTORY = 'mentor-search-directory'
     public static REQUESTS = 'requests'
+    public static CHAT = 'chat'
 }

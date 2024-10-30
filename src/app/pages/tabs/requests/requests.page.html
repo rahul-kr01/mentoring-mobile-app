@@ -24,7 +24,7 @@
             <app-generic-card 
               [data]="value?.user_details" 
               [meta]="{ isSent: value?.created_by === value?.user_id, message: value?.meta?.message, timeStamp: '' }" 
-              [buttonConfig]="buttonConfig">
+              [buttonConfig]="buttonConfig" (onClickEvent)="onCardClick($event)">
             </app-generic-card>
           </ion-col>
         </ion-row>

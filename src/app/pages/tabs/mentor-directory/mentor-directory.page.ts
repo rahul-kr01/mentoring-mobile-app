@@ -98,6 +98,9 @@ export class MentorDirectoryPage implements OnInit {
       case 'cardSelect':
         this.router.navigate([CommonRoutes.MENTOR_DETAILS, event?.data?.id]);
         break;
+      case 'chat':
+        this.router.navigate([CommonRoutes.CHAT, event.data]);
+        break;
     }
   }
   async loadMore(event) {
