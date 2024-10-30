@@ -24,7 +24,7 @@ export class SearchbarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.criteriaChipSubscription = this.utilService.currentCriteriaChip.subscribe(selectedCriteria => {
+    this.utilService.currentCriteriaChip.subscribe(selectedCriteria => {
       this.criteriaChip = selectedCriteria ? JSON.parse(selectedCriteria) : "";
     });
     this.showSelectedCriteria = this.criteriaChip? this.criteriaChip : "";
