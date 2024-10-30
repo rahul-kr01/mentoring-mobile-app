@@ -11,7 +11,7 @@ export class NoDataFoundComponent implements OnInit {
 @Input() messageHeader;
 @Input() messageDescription;
 @Input() image = 'assets/no-data/sad-face-2691.svg';
-@Input() mentorButton;
+@Input() exploreButton;
 @Input() noResult;
   constructor(private router: Router) { }
 

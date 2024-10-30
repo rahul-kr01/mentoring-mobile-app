@@ -1,0 +1,4 @@
+export const MY_CONNECTIONS_NO_RESULT_FOUND = {
+    header: 'SEARCH_RESULTS_NOT_FOUND',
+    subHeader: 'NO_RESULT_SUB_HEADER'
+}

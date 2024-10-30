@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
 import { FILTER_ROLES } from 'src/app/core/constants/formConstant';
 import { paginatorConstants } from 'src/app/core/constants/paginatorConstants';
 import { HttpService, UtilService } from 'src/app/core/services';
@@ -29,10 +28,6 @@ export class GenericListPage implements OnInit {
     headerColor: 'primary',
   };
 
-  public noResult: any ={
-    header: 'SEARCH_RESULTS_NOT_FOUND',
-    subHeader: 'NO_RESULT_SUB_HEADER'
-  }
   overlayChips: any;
   routeData: any;
   searchAndCriterias: any;
@@ -43,14 +38,15 @@ export class GenericListPage implements OnInit {
   page: number = 1;
   setPaginatorToFirstpage: boolean;
   urlQueryData: string;
-  mentorList: any;
+  responseData: any;
   searchText: any;
   totalCount: any;
   isLoaded: boolean;
   criteriaChipEvent: any;
-  enableMentorButton: boolean = false;
+  enableExploreButton: boolean = false;
   valueFromChipAndFilter: any;
   buttonConfig: any;
+  noResult: any;
 
   constructor(private route: ActivatedRoute,
     private httpService: HttpService,
@@ -61,11 +57,14 @@ export class GenericListPage implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ionViewWillEnter(){
     this.route.data.subscribe(data => {
       this.routeData = data;
       this.action(this.routeData);
-      this.buttonConfig = this.routeData.button_config;
+      this.buttonConfig = this.routeData?.button_config;
+      this.noResult = this.routeData?.noDataFound;
     });
     this.filterListData(this.routeData.filterType);
     this.getData(this.routeData);
@@ -87,11 +86,10 @@ export class GenericListPage implements OnInit {
       '&search_on=' + (data?.headerData?.criterias?.name ? data?.headerData?.criterias?.name : '')
     })
     this.isLoaded = true;
-    this.searchAndCriterias = { ...this.searchAndCriterias, result: response };
-    this.searchText = this.searchAndCriterias?.headerData?.searchText;
-    this.mentorList = response.result.data;
-    this.totalCount = response?.result?.count;
-    if(!this.mentorList && !this.totalCount){this.enableMentorButton = true}
+    this.searchText = data?.headerData?.searchText;
+    this.responseData = !response.result.data;
+    this.totalCount = !response?.result?.count;
+    this.enableExploreButton = !this.responseData && !this.totalCount && this.routeData?.explore_button;
   }
 
 
@@ -113,10 +111,10 @@ export class GenericListPage implements OnInit {
         }
         this.extractLabels(dataReturned.data.data.selectedFilters);
         this.getUrlQueryData();
+        this.page = 1;
+        this.setPaginatorToFirstpage = true;
+        this.getData(this.urlQueryData)
       }
-      this.page = 1;
-      this.setPaginatorToFirstpage = true;
-      this.getData(this.urlQueryData)
     });
     modal.present();
   }
@@ -153,28 +151,17 @@ export class GenericListPage implements OnInit {
 
   }
 
-  removeFilteredData(chip){
-    for (let key in this.filteredDatas) {
-      if (this.filteredDatas.hasOwnProperty(key)) {
+  removeFilteredData(chip: string) {
+    Object.keys(this.filteredDatas).forEach(key => {
+        let values = this.filteredDatas[key].split(',');
+        let chipIndex = values.indexOf(chip);
 
-          let values = this.filteredDatas[key].split(',');
-
-          let chipIndex = values.indexOf(chip);
-
-          if (chipIndex > -1) {
-              values.splice(chipIndex, 1);
-
-              let newValue = values.join(',');
-
-              if (newValue === '') {
-                delete this.filteredDatas[key];
-            } else {
-                this.filteredDatas[key] = newValue;
-            }
-          }
-      }
-    }
-  }
+        if (chipIndex > -1) {
+            values.splice(chipIndex, 1);
+            this.filteredDatas[key] = values.length ? values.join(',') : delete this.filteredDatas[key];
+        }
+    });
+}
 
   onPageChange(event){
     this.page = event.pageIndex + 1,
@@ -184,17 +171,9 @@ export class GenericListPage implements OnInit {
 
   action(event) {
     if(event && event.filterType){
-      switch (event.filterType) {
-        case 'mentor':
-          this.permissionService.getPlatformConfig().then((config)=>{
-            this.overlayChips = config?.result?.search_config?.search?.mentor?.fields;
-          });
-          break;
-        case 'session':
-          this.permissionService.getPlatformConfig().then((config)=>{
-            this.overlayChips = config?.result?.search_config?.search?.session?.fields;
-          });
-        }
+      this.permissionService.getPlatformConfig().then((config)=>{
+        this.overlayChips = config?.result?.search_config?.search[event.filterType]?.fields;
+       })
     }
   }
 

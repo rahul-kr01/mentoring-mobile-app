@@ -23,11 +23,11 @@
     </div>
   </ion-row>
   <ion-row class="d-flex ">
-      <ion-col  *ngFor="let value of mentorList" padding sizeXs="12" sizeSm="12" sizeMd="6" sizeLg="4" align-self-stretch>
-        <app-generic-card [data]="value" (onClickEvent)="eventAction($event)" [buttonConfig]="buttonConfig"></app-generic-card>
-      </ion-col>
+    <ion-col  *ngFor="let value of responseData" padding sizeXs="12" sizeSm="12" sizeMd="6" sizeLg="4" align-self-stretch>
+      <app-generic-card [data]="value" (onClickEvent)="eventAction($event)" [buttonConfig]="buttonConfig"></app-generic-card>
+    </ion-col>
   </ion-row>
   <div *ngIf="!totalCount && isLoaded">
-    <app-no-data-found [messageHeader]="noResult.header" [noResult]="noResult" [mentorButton]="enableMentorButton"> </app-no-data-found>
+    <app-no-data-found [messageHeader]="noResult.header" [noResult]="noResult" [exploreButton]="enableExploreButton"> </app-no-data-found>
   </div>
 </ion-content>

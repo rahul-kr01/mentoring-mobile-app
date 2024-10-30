@@ -7,6 +7,7 @@ import { PAGE_IDS } from 'src/app/core/constants/page.ids';
 import { AllowPageAccess } from 'src/app/core/guards/allowPageAccess/allowPageAccess.guard';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
 import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
+import { MY_CONNECTIONS_NO_RESULT_FOUND } from 'src/app/core/constants/genericConstants';
 
 const routes: Routes = [
   {
@@ -146,7 +147,9 @@ const routes: Routes = [
           placeholder: 'Search connections',
           filterType: 'mentor',
           url: urlConstants.API_URLS.MENTOR_AND_MENTEE_CONNECTIONS,
-          button_config: CHAT_MESSAGES.GENERIC_CARD_MY_CONNECTION_BTN_CONFIG
+          button_config: CHAT_MESSAGES.GENERIC_CARD_MY_CONNECTION_BTN_CONFIG,
+          explore_button: true,
+          noDataFound: MY_CONNECTIONS_NO_RESULT_FOUND
         }
       },
       {
