@@ -87,8 +87,8 @@ export class GenericListPage implements OnInit {
     })
     this.isLoaded = true;
     this.searchText = data?.headerData?.searchText;
-    this.responseData = !response.result.data;
-    this.totalCount = !response?.result?.count;
+    this.responseData = response.result.data;
+    this.totalCount = response?.result?.count;
     this.enableExploreButton = !this.responseData && !this.totalCount && this.routeData?.explore_button;
   }
 
