@@ -307,5 +307,9 @@
     "VIEW_MESSAGE": "View Message",
     "REQUEST_SESSION": "Request session",
     "CHAT": "Chat",
-    "EXPLORE_MENTORS": "Explore mentors"
+    "EXPLORE_MENTORS": "Explore mentors",
+    "SEARCH_RESULTS_NOT_FOUND_HEADER": "This space looks empty",
+    "NO_RESULT_SUB_HEADER_MENTEE": "Expand your network! Book slots or message experienced professionals to get connected.",
+    "NO_RESULT_SUB_HEADER_MENTOR": "Connected mentees will appear here when you accept their request. Keep your calender updated to show your availability.",
+    "SET_CALENDAR": "Set Calendar"
 }

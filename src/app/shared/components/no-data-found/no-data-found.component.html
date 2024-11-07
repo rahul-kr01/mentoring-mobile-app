@@ -7,7 +7,9 @@
     <div class="description">
       <h4> {{messageDescription | translate}} </h4>
       <p>{{noResult?.subHeader | translate}}</p>
-      <ion-button *ngIf="exploreButton"  (click)="onSubmit()">{{'EXPLORE_MENTORS' | translate}}</ion-button>
+      <ion-button *ngIf="exploreButton" (click)="onSubmit(isMentor)">
+        {{ isMentor ? ('EXPLORE_MENTORS' | translate) : ('SET_CALENDAR' | translate) }}
+      </ion-button>
     </div>
   </div>
 </div>

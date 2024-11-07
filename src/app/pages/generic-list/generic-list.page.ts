@@ -3,10 +3,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { FILTER_ROLES } from 'src/app/core/constants/formConstant';
+import { NO_RESULT_FOUND_FOR_MENTEE, NO_RESULT_FOUND_FOR_MENTOR } from 'src/app/core/constants/genericConstants';
 import { paginatorConstants } from 'src/app/core/constants/paginatorConstants';
 import { HttpService, UtilService } from 'src/app/core/services';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { PermissionService } from 'src/app/core/services/permission/permission.service';
+import { ProfileService } from 'src/app/core/services/profile/profile.service';
 import { FilterPopupComponent } from 'src/app/shared/components/filter-popup/filter-popup.component';
 import { SearchbarComponent } from 'src/app/shared/components/searchbar/searchbar.component';
 import { CommonRoutes } from 'src/global.routes';
@@ -47,6 +49,7 @@ export class GenericListPage implements OnInit {
   valueFromChipAndFilter: any;
   buttonConfig: any;
   noResult: any;
+  isMentor: boolean;
 
   constructor(private route: ActivatedRoute,
     private httpService: HttpService,
@@ -54,20 +57,28 @@ export class GenericListPage implements OnInit {
     private utilService: UtilService,
     private formService: FormService,
     private permissionService:PermissionService,
-    private router: Router
+    private router: Router,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit() { }
 
   ionViewWillEnter(){
+    this.isMentor = this.profileService.isMentor;
     this.route.data.subscribe(data => {
       this.routeData = data;
       this.action(this.routeData);
       this.buttonConfig = this.routeData?.button_config;
-      this.noResult = this.routeData?.noDataFound;
     });
     this.filterListData(this.routeData.filterType);
     this.getData(this.routeData);
+    if(!this.searchText &&this.isMentor && !this.totalCount){
+      this.noResult = NO_RESULT_FOUND_FOR_MENTOR
+      this.enableExploreButton = true;
+    }else if(!this.searchText &&!this.isMentor && !this.totalCount){
+      this.noResult = NO_RESULT_FOUND_FOR_MENTEE;
+      this.enableExploreButton = true;
+    }
   }
 
   searchResults(event){
@@ -89,7 +100,10 @@ export class GenericListPage implements OnInit {
     this.searchText = data?.headerData?.searchText;
     this.responseData = response.result.data;
     this.totalCount = response?.result?.count;
-    this.enableExploreButton = !this.responseData && !this.totalCount && this.routeData?.explore_button;
+    if(this.searchText && !this.responseData.length){
+    this.noResult = this.routeData?.noDataFound;
+    this.enableExploreButton = false;
+    }
   }
 
 
@@ -181,6 +195,9 @@ export class GenericListPage implements OnInit {
     switch (event.type) {
       case 'cardSelect':
         this.router.navigate([CommonRoutes.MENTOR_DETAILS, event?.data?.id]);
+        break;
+      case 'chat':
+        this.router.navigate([CommonRoutes.CHAT, event.data]);
         break;
     }
   }
