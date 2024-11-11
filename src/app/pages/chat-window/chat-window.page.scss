@@ -32,6 +32,7 @@
 .message-info{
     position: fixed; 
     width: 100%;
+    word-break: break-word;
     .info-container{
         background-color: #f1f1f1;
         padding: 10px;
@@ -67,4 +68,14 @@
     margin-top: 15px;
 }
 }
+
+.name-text {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;                  
+    max-width: 240px;
+    display: block;
+}
+  
 
