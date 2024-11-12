@@ -11,7 +11,7 @@ import { CommonRoutes } from 'src/global.routes';
 export class NoDataFoundComponent implements OnInit {
 @Input() messageHeader;
 @Input() messageDescription;
-@Input() image = 'assets/no-data/sad-face-2691.svg';
+@Input() image = 'assets/no-data/no_result_found.png';
 @Input() exploreButton;
 @Input() noResult;
   isMentor: boolean;
@@ -19,13 +19,8 @@ export class NoDataFoundComponent implements OnInit {
 
   ngOnInit() {}
 
-  onSubmit(mentor){
-    if(mentor){
-      this.router.navigate([`/${CommonRoutes.TABS}/${CommonRoutes.MENTOR_DIRECTORY}`], { replaceUrl: true });
-    }else{
-      console.log('set calender', mentor)
-    }
-    
+  onSubmit(){
+    this.router.navigate([`/${CommonRoutes.TABS}/${CommonRoutes.MENTOR_DIRECTORY}`], { replaceUrl: true });
   }
 
 }
