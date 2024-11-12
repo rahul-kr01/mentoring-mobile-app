@@ -13,6 +13,7 @@ export class ChipsAndFilterComponent implements OnInit {
   @Output() removeFilterChip = new EventEmitter();
   @Input() selectedFilters:  any;
   @Output() sendChildValue = new EventEmitter();
+  @Input() isFilterEnable: any;
 
   constructor(private router: Router) { }
 

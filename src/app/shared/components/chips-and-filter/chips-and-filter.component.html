@@ -22,7 +22,7 @@
           </div>
         </ion-row>
       </ion-col>
-      <ion-col size="auto" style="display: flex;align-items: center;">
+      <ion-col size="auto" style="display: flex;align-items: center;" *ngIf="isFilterEnable">
         <div style="width: 5em">
           <div class="filter">
             <p style="margin: unset;">{{"FILTER" | translate}}</p>

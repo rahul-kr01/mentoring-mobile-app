@@ -50,6 +50,9 @@ export class GenericListPage implements OnInit {
   buttonConfig: any;
   noResult: any;
   isMentor: boolean;
+  filterIcon: boolean = false;
+  filterChipsSelected: boolean = false;
+  selectedCriteria: any;
 
   constructor(private route: ActivatedRoute,
     private httpService: HttpService,
@@ -87,22 +90,29 @@ export class GenericListPage implements OnInit {
       routeData: this.routeData
     }
     this.searchAndCriterias = { ...this.searchAndCriterias };
+    this.selectedCriteria = event?.criterias?.name;
+    this.searchText = event?.searchText;
     this.getData(this.searchAndCriterias)
   }
   async getData(data){
     let response = await this.httpService.get({
       url: this.routeData.url + (this.page ? this.page : '')+ 
       '&limit=' + (this.pageSize ? this.pageSize : '') +  
-      '&search=' + (data?.headerData?.searchText ? btoa(data.headerData.searchText) : '') + '&' + (this.urlQueryData ? this.urlQueryData: '') + 
-      '&search_on=' + (data?.headerData?.criterias?.name ? data?.headerData?.criterias?.name : '')
+      '&search=' + (this.searchText ? btoa(this.searchText) : '') + 
+      '&' + (this.urlQueryData ? this.urlQueryData: '') + 
+      '&search_on=' + (this.selectedCriteria ? this.selectedCriteria : '')
     })
     this.isLoaded = true;
-    this.searchText = data?.headerData?.searchText;
     this.responseData = response.result.data;
     this.totalCount = response?.result?.count;
     if(this.searchText && !this.responseData.length){
     this.noResult = this.routeData?.noDataFound;
     this.enableExploreButton = false;
+    }
+    if(!this.responseData?.length && this.searchText && !this.filterChipsSelected) { 
+      this.filterIcon = false;
+    } else { 
+      this.filterIcon = true;
     }
   }
 
@@ -121,6 +131,11 @@ export class GenericListPage implements OnInit {
           for (let key in dataReturned.data.data.selectedFilters) {
             this.filteredDatas[key] = dataReturned.data.data.selectedFilters[key].slice(0, dataReturned.data.data.selectedFilters[key].length).map(obj => obj.value).join(',').toString()
           }
+          if(dataReturned.data.data.selectedFilters.roles){
+            this.filterChipsSelected = true;
+          }else{
+            this.filterChipsSelected = false;
+          }
           this.selectedChips = true;
         }
         this.extractLabels(dataReturned.data.data.selectedFilters);
@@ -138,8 +153,8 @@ export class GenericListPage implements OnInit {
     const obj = {filterType: filterType, org: true};
     let data = await this.formService.filterList(obj);
     this.filterData = await this.utilService.transformToFilterData(data, obj);
-    const filterRoles = FILTER_ROLES;
-    this.filterData.unshift(filterRoles);
+    const filterRoles = this.isMentor ? FILTER_ROLES: "";
+    filterRoles ? this.filterData.unshift(filterRoles) : "";
   }
   extractLabels(data) {
     this.chips = [];
