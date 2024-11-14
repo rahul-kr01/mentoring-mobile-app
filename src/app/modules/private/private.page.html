@@ -28,13 +28,23 @@
         <ion-list lines="none" class="sub-menu-list">
           <ion-menu-toggle auto-hide="false" [class]="adminPage?.class" *ngIf="adminAccess">
             <ion-item [routerLink]="adminPage?.url" lines="none" detail="false" (click)="menuItemAction(adminPage)" *allowTemplateView="adminPage?.pageId">
-              <ion-icon class="side-menu-icon" slot="start" [ios]="adminPage.icon + '-outline'" [md]="adminPage.icon + '-outline'"></ion-icon>
+              <ng-container *ngIf="isCustomIcon(adminPage?.icon); else defaultAdminIcon">
+                <img [src]="adminPage.icon" class="side-menu-icon custom-icon" slot="start" alt="{{ adminPage.title }} icon" />
+              </ng-container>
+              <ng-template #defaultAdminIcon>
+                <ion-icon class="side-menu-icon" slot="start" [ios]="adminPage.icon + '-outline'" [md]="adminPage.icon + '-outline'"></ion-icon>
+              </ng-template>
               <ion-label class="sub-menu-list-label"><strong>{{ adminPage.title | translate}}</strong></ion-label>
             </ion-item>
           </ion-menu-toggle>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index" [class]="p?.class">
             <ion-item [routerLink]="p?.url" lines="none" detail="false" (click)="menuItemAction(p)" *allowTemplateView="p?.pageId">
-              <ion-icon class="side-menu-icon" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-outline'"></ion-icon>
+              <ng-container *ngIf="isCustomIcon(p.icon); else defaultIcon">
+                <img [src]="p.icon" class="side-menu-icon custom-icon" slot="start" alt="{{ p.title }} icon" />
+              </ng-container>
+              <ng-template #defaultIcon>
+                <ion-icon class="side-menu-icon" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-outline'"></ion-icon>
+              </ng-template>
               <ion-label class="sub-menu-list-label"><strong>{{ p.title | translate}}</strong></ion-label>
             </ion-item>
           </ion-menu-toggle>

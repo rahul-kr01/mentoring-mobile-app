@@ -113,7 +113,7 @@ export class PrivatePage implements OnInit {
            this.profile.getUserRole(userDetails)
            this.adminAccess = userDetails.permissions ? this.permissionService.hasAdminAcess(this.actionsArrays,userDetails?.permissions) : false;
            if(this.profile?.isMentor){
-            this.appPages.splice(2, 0,{ title: 'REQUESTS', action: "requests", icon: 'chatbubble-ellipses', class:"hide-on-small-screen", url: CommonRoutes.TABS+'/'+CommonRoutes.REQUESTS, pageId: PAGE_IDS.requests })
+            this.appPages.splice(2, 0,{ title: 'REQUESTS', action: "requests", icon: '/assets/images/request_icon_outline.svg', class:"hide-on-small-screen", url: CommonRoutes.TABS+'/'+CommonRoutes.REQUESTS, pageId: PAGE_IDS.requests })
           }
           }
          this.getUser();
@@ -223,6 +223,10 @@ ngOnDestroy(): void {
   async viewRoles(){
   const userRoles = await this.localStorage.getLocalData(localKeys.USER_ROLES);
   this.profile.viewRolesModal(userRoles)
+}
+
+isCustomIcon(icon: string | undefined): boolean {
+  return icon ? /\.(svg|png|jpg|jpeg|gif)$/.test(icon) : false;
 }
 
 }

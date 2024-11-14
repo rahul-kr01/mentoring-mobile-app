@@ -14,14 +14,16 @@ import { environment } from 'src/environments/environment';
 export class TabsPage {
   private activeTab?: HTMLElement;
   subscription: any;
-  PAGE_IDS = PAGE_IDS
+  PAGE_IDS = PAGE_IDS;
+  customIcon: string ;
   constructor(
     private localStorage : LocalStorageService,
-    private profile: ProfileService,
+    public profile: ProfileService,
 
   ) {}
   tabChange(tabsRef: IonTabs) {
     this.activeTab = tabsRef?.outlet?.activatedView?.element;
+    (tabsRef.outlet.activatedView.stackId == 'requests') ? this.customIcon= '/assets/images/request_icon_solid_color.svg' : this.customIcon = '/assets/images/request_icon_dark.svg';
   }
   ionViewWillLeave() {
     this.localStorage.getLocalData(localKeys.USER_DETAILS).then((userDetails)=>{
@@ -50,5 +52,9 @@ export class TabsPage {
   }
   allowTemplateView(page) {
     return !environment.restictedPages.includes(page);
+  }
+
+  isCustomIcon(icon: string): boolean {
+    return icon ? /\.(svg|png|jpg|jpeg|gif)$/.test(icon) : false;
   }
 }
