@@ -1,10 +1,10 @@
 <app-page-header [config]="headerConfig">
     <app-searchbar *ngIf="routeData && overlayChips" [data]="routeData" [overlayChip]="overlayChips" [receivedData]="criteriaChipEvent" (outputData)="searchResults($event)" [valueFromParent]="valueFromChipAndFilter"></app-searchbar>
 </app-page-header>
-<app-chips-and-filter *ngIf="responseData?.length && !searchText && routeData || searchAndCriterias" [selectedFilters]="chips" [searchAndCriteriaData]="searchAndCriterias" (removeFilterChip)="removeChip($event)" (filterClick)="onClickFilter()" (sendChildValue)="eventHandler($event)" [isFilterEnable]="filterIcon"></app-chips-and-filter>
+<app-chips-and-filter *ngIf="responseData?.length && !searchText && routeData || searchAndCriterias || (!filterChipsSelected && !responseData?.length)" [selectedFilters]="chips" [searchAndCriteriaData]="searchAndCriterias" (removeFilterChip)="removeChip($event)" (filterClick)="onClickFilter()" (sendChildValue)="eventHandler($event)" [isFilterEnable]="filterIcon"></app-chips-and-filter>
 
 <ion-content>
-  <ion-row *ngIf="responseData?.length && !searchText && routeData || searchAndCriterias">
+  <ion-row *ngIf="responseData?.length && !searchText && routeData || searchAndCriterias || (!filterChipsSelected && !responseData?.length)">
     <div class="search-navigation">
       <div class="search-result">
         <div class="search-result-label">

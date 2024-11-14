@@ -81,6 +81,9 @@ export class GenericListPage implements OnInit {
     }else if(!this.searchText &&!this.isMentor && !this.totalCount){
       this.noResult = NO_RESULT_FOUND_FOR_MENTEE;
       this.enableExploreButton = true;
+    }else{
+      this.noResult = this.routeData?.noDataFound;
+      this.enableExploreButton = false;
     }
   }
 
