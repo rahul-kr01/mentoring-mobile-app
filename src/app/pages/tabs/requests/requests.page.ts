@@ -21,6 +21,8 @@ export class RequestsPage implements OnInit {
   segmentType = 'slot-requests';
   buttonConfig: any;
   data: any;
+  noResult: any;
+  routeData: any;
 
   constructor(
     private httpService: HttpService,
@@ -31,7 +33,8 @@ export class RequestsPage implements OnInit {
   ngOnInit() { 
     this.pendingRequest();
     this.route.data.subscribe(data => {
-      this.buttonConfig = data.button_config;
+      this.routeData = data;
+      this.buttonConfig = this.routeData?.button_config;
     })
    }
 
@@ -46,6 +49,9 @@ export class RequestsPage implements OnInit {
     try {
       let data: any = await this.httpService.get(config);
       this.data = data ? data.result.data : '';
+      if(!this.data.length){
+        this.noResult = this.routeData?.noDataFound;
+      }
       return data;
     }
     catch (error) {

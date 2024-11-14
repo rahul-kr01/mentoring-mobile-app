@@ -31,4 +31,7 @@
       </ion-grid>
     </div>
   </div>
+  <div *ngIf="!data?.length">
+    <app-no-data-found [noResult]="noResult"> </app-no-data-found>
+  </div>
 </ion-content>
