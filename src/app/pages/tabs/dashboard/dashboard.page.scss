@@ -60,3 +60,43 @@
 .my-chart {
     padding-top: 25px;
   }
+
+
+.select-role{
+    width: 100%;
+    padding: 0 5% 0 5%;
+    align-items: center;
+}
+
+.inner-div-style{
+    margin: 2% 4%;
+    background-color: var(--light-gray);
+    border-radius: 18px;
+    padding: 14px;
+}
+  
+.no-label-item ion-select {
+    width: 100%; /* Ensure the select takes up the full width of the item */
+}
+  
+
+.custom-border-radius {
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensure content respects the border radius */
+    --background: #fff; /* Set background color */
+    --border-color: #090909; /* Set custom border color */
+  }
+  
+  /* Target the inner native elements to apply the same styles */
+  .custom-border-radius::part(native) {
+    border-radius: 8px; /* Ensure inner elements match the parent's border radius */
+    background-color: #fff; /* Inherit background from parent */
+  }
+  
+  .custom-height{
+    --min-height: 10%;
+  }
+h3{
+    margin-bottom: 5px !important;
+}
+  

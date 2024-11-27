@@ -1,147 +1,148 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { Chart } from 'chart.js/auto';
-import { urlConstants } from 'src/app/core/constants/urlConstants';
-import { HttpService } from 'src/app/core/services';
+import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+import { CREATE_SESSION_FORM, MANAGERS_CREATE_SESSION_FORM } from 'src/app/core/constants/formConstant';
+import { localKeys } from 'src/app/core/constants/localStorage.keys';
+import { manageSessionAction, permissions } from 'src/app/core/constants/permissionsConstant';
+import { LocalStorageService } from 'src/app/core/services';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { PermissionService } from 'src/app/core/services/permission/permission.service';
 import { ProfileService } from 'src/app/core/services/profile/profile.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'dashboard.page.html',
-  styleUrls: ['dashboard.page.scss']
+  styleUrls: ['dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  @ViewChild(IonContent) content: IonContent;
-  @ViewChild('pieChart') pieChart: ElementRef;
-  public chart: any;
-  segment: any;
-  dataAvailable;
-  isMentor:boolean;
-  selectedFilter = "WEEKLY";
-  filter: any = [
-    {
-      label: 'THIS_WEEK',
-      value: 'WEEKLY'
-    },
-    {
-      label: 'THIS_MONTH',
-      value: 'MONTHLY'
-    },
-    {
-      label: 'THIS_QUARTER',
-      value: 'QUARTERLY'
+  selectedDuration = 'month';
+  startDate: Date | null = null;
+  endDate: Date | null = null;
+  entityList: any;
+  userDefault: any = 'Mentee';
+  user: any;
+  extractedData: any;
+  sessions = ['All', 'Private', 'Public'];
+  selectedSessionType = 'All';
+  selectedEntityType = 'Select entity';
+  durationConfig: any = {
+    durations:[
+      {
+        label: 'Week',
+        value: 'week'
+      },
+      {
+        label: 'Month',
+        value: 'month'
+      },
+      {
+        label: 'Quarter',
+        value: 'quarter'
+      },
+    ]
+  }
+
+
+  constructor(private permissionService: PermissionService,
+    private form: FormService,
+    private localStorage: LocalStorageService,
+    private profileService: ProfileService
+  ) {}
+
+  async ngOnInit() {
+    let formConfig =(await this.permissionService.hasPermission({ module: permissions.MANAGE_SESSION, action: manageSessionAction.SESSION_ACTIONS })) ? MANAGERS_CREATE_SESSION_FORM : CREATE_SESSION_FORM
+    const result = await this.form.getForm(formConfig);
+    const formData = _.get(result, 'data.fields');
+    const entityNames = await this.form.getEntityNames(formData);
+    this.entityList = await this.form.getEntities(entityNames, 'SESSION');
+    this.extractedData = this.entityList.map(item => ({
+        label: item.label,
+        value: item.value
+    }));
+    const response = await this.localStorage.getLocalData(localKeys.USER_DETAILS);
+    if(response){
+      this.user = await this.profileService.getUserRole(response);
     }
-  ];
-  loading: boolean = false;
-  chartData: any;
-
-  constructor(
-    private translate: TranslateService,
-    private profile: ProfileService,
-    private apiService: HttpService) { }
-
-  ngOnInit() { }
-
-  ionViewWillEnter() {
-    this.isMentor = this.profile.isMentor;
-    this.segment = this.isMentor ? "mentor" : "mentee";
-    this.dataAvailable = true;
-    this.getReports();
-    this.gotToTop();
-  }
-
-  gotToTop() {
-    this.content.scrollToTop(1000);
-  }
-
-  segmentChanged(ev: any) {
-    console.log('Segment changed', ev);
-    this.segment = ev.detail.value;
-    this.chart.destroy();
-    this.dataAvailable = true;
-    this.getReports();
-  }
-
-  filterChangeHandler(event: any) {
-    this.selectedFilter = event.target.value;
-    this.chart.destroy();
-    this.dataAvailable = true;
-    this.getReports();
   }
 
   public headerConfig: any = {
     menu: true,
-    label:'DASHBOARD_PAGE',
+    label: 'DASHBOARD_PAGE',
     headerColor: 'primary',
   };
+  
+  
+downloadData() {
+  console.log('Download initiated');
+}
 
-  getReports() {
-    const url = this.segment === 'mentor' ? urlConstants.API_URLS.MENTOR_REPORTS : urlConstants.API_URLS.MENTEE_REPORTS;
-    const config = {
-      url: url+this.selectedFilter.toUpperCase(),
-    };
-    let texts: any;
-    this.translate.get(['TOTAL_SESSION_CREATED', 'TOTAL_SESSION_CONDUCTED', 'TOTAL_SESSION_ENROLLED', 'TOTAL_SESSION_ATTENDED']).subscribe(text => {
-      texts = text;
-    })
-    this.apiService.get(config).then(success => {
-      this.chartData = success.result;
-      this.createChart();
-    }).catch(error => {
-    })
+selectRoles(){
+  console.log('select roles')
+}
+
+
+
+
+
+
+formConfig: any = {
+  big_number_form:[
+    {
+      value: 90,
+      description: 'session conducted'
+    },
+    {
+      value: 90,
+      description: 'session attended'
+    },
+    {
+      value: 90,
+      description: 'session created'
+    }
+  ]
+}
+
+
+
+calculateDates(): void {
+  const today = new Date();
+
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31);
+
+  switch (this.selectedDuration) {
+    case 'week':
+      const dayOfWeek = today.getDay();
+      this.startDate = new Date(today);
+      this.startDate.setDate(today.getDate() - dayOfWeek);
+      this.endDate = new Date(today);
+      this.endDate.setDate(today.getDate() + (6 - dayOfWeek));
+      break;
+    case 'month':
+      const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      this.startDate = firstDayOfMonth;
+      this.endDate = lastDayOfMonth;
+      break;
+    case 'quarter':
+      const currentQuarter = Math.floor((today.getMonth() + 3) / 3);
+      const firstDayOfQuarter = new Date(today.getFullYear(), (currentQuarter - 1) * 3, 1);
+      const lastDayOfQuarter = new Date(today.getFullYear(), currentQuarter * 3, 0);
+      this.startDate = firstDayOfQuarter;
+      this.endDate = lastDayOfQuarter;
+      break;
+    case 'year':
+      this.startDate = firstDayOfYear;
+      this.endDate = lastDayOfYear;
+      break;
+    default:
+      this.startDate = null;
+      this.endDate = null;
   }
+  console.log(this.startDate, this.endDate,"start and end");
+}
 
-  createChart() {
-    const maxDataValue = Math.max(
-      ...(
-          this.segment === 'mentor' ?
-          [this.chartData.total_session_created, this.chartData.total_session_assigned, this.chartData.total_session_hosted] :
-          [this.chartData.total_session_enrolled, this.chartData.total_session_attended]
-      )
-  );
-    this.chart = new Chart('MyChart', {
-      type: this.segment === 'mentor' ? 'bar': 'pie',
-      data: {
-        labels: this.segment === 'mentor' ? ['Total sessions created', 'Total sessions assigned', 'Total sessions conducted'] : ['Total sessions enrolled', 'Total sessions attended'],
-        datasets: [{
-          label: '',
-          data: this.segment === 'mentor' ? [this.chartData.total_session_created, this.chartData.total_session_assigned,  this.chartData.total_session_hosted,] : [this.chartData.total_session_enrolled, this.chartData.total_session_attended],
-          backgroundColor: this.segment === 'mentor' ?['#4e81bd', '#fdc107', '#5ab251']: ['#ffdf00', '#7b7b7b'],
-          borderWidth: 1,
-          barThickness: 50,
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        scales: this.segment === 'mentor' ?{
-          y: {
-            ticks: {
-              stepSize: this.calculateStepSize(maxDataValue),
-            },
-            grid: {
-              display: false,
-            },
-          },
-          x:{
-            grid: {
-              display: false,
-            },
-          }
-        }:{}
-      }
-    });
-    this.dataAvailable = !!(this.chartData?.total_session_created ||this.chartData?.total_session_enrolled ||this.chartData?.total_session_assigned ||this.chartData?.total_session_hosted);
-  }
+handleChange(e) {
+  console.log('ionChange fired with value: ' + e.detail.value);
+}
 
-  calculateStepSize(maxDataValue) {
-
-    return Math.ceil(maxDataValue / 5);
-  }
 }

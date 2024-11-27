@@ -1,73 +1,76 @@
 <app-page-header [config]="headerConfig"></app-page-header>
 
-
-<ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row class="d-flex  ion-justify-content-center">
-      <ion-col padding size-xs="12" size-sm="12" size-md="10" size-lg="10">
-  <div>
-    <ion-toolbar *ngIf="isMentor">
-      <ion-segment [value]="segment" swipeGesture="true" (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="mentor">
-          <ion-label class="segment-label">{{'AS_A_MENTOR' | translate}}</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="mentee">
-          <ion-label class="segment-label">{{'AS_A_MENTEE' | translate}}</ion-label>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-    <div  class="main-wrapper">
-      <ion-row class="stat-row">
-        <ion-col>
-          <p class="dashboard-title">{{'SESSION_OVERVIEW' | translate}}</p>
-        </ion-col>
-        <ion-col>
-          <div class="filter">
-            <app-filter [defaultValue]="selectedFilter" [filter]="filter" (filterChange)="filterChangeHandler($event)">
-            </app-filter>
-          </div>
-        </ion-col>
-      </ion-row>
-
-      <div [ngSwitch]="segment"  *ngIf="dataAvailable">
-        <div *ngSwitchCase="'mentor'">
-          <div class="my-chart" fxFlex *ngIf="dataAvailable">
-            <canvas id="MyChart" width="400px" height="400px">{{ chart }}</canvas>
-          </div>
-        </div>
-        <div *ngSwitchCase="'mentee'">
-          <ion-row class="stat-box">
-            <ion-col class="bg-lite">
-              <p class="stat-title">
-                {{'TOTAL_SESSION_ENROLLED' | translate}}
-                <span>{{ chartData?.total_session_enrolled }}</span>
-              </p>
-            </ion-col>
-            <ion-col size=".5">
-            </ion-col>
-            <ion-col class="bg-lite">
-              <p class="stat-title">
-                {{'TOTAL_SESSION_ATTENDED' | translate}}
-                <span>{{ chartData?.total_session_attended }}</span>
-              </p>
-            </ion-col>
-          </ion-row>
-          <div class="my-chart" fxFlex *ngIf="dataAvailable">
-            <canvas id="MyChart">{{ chart }}</canvas>
-          </div>
-        </div>
-      </div>
-      <div class="empty-state-container" *ngIf="!dataAvailable">
-        <app-no-data-found [messageHeader]="'NO_DATA_AVAILABLE'"></app-no-data-found>
-      </div>
-    </div>
-
+<ion-content>
+  <div class="select-role d-flex">
+    <h2 style="margin: revert;">Role</h2>
+    <ion-item *ngIf="user?.length" fill="outline" style="margin-left: 4%;" class="no-label-item custom-height">
+      <ion-select placeholder="Select Role" [value]="user[0]" (ionChnage)="selectRoles()">
+        <ion-select-option *ngFor="let role of user" [value]="role">{{ role | snakeCaseToUpperCase }}</ion-select-option>
+      </ion-select>
+    </ion-item>
   </div>
-</ion-col>
-</ion-row>
-</ion-grid>
+  
+<div class="graphs-and-charts inner-div-style">
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="3" sizeXs="6" sizeLg="2">
+        <h3>Duration</h3>
+        <ion-item fill="outline" lines="none" class="no-label-item custom-border-radius custom-height">
+          <ion-select placeholder="Select Duration" [value]="selectedDuration" (ionChange)="calculateDates()">
+            <ion-select-option *ngFor="let duration of durationConfig?.durations" [value]="duration.value">
+              {{ duration.label }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>        
+      </ion-col>
+      <ion-col size="3" sizeXs="6" sizeLg="2">
+        <h3>Session Type</h3>
+        <ion-item fill="outline" class="no-label-item custom-border-radius custom-height">
+          <ion-select [value]="selectedSessionType" (ionChange)="handleChange($event)">
+            <ion-select-option *ngFor="let session of sessions" [value]="session">{{ session }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="3" sizeXs="6" sizeLg="2">
+        <h3>Entity Type</h3>
+        <ion-item fill="outline" class="no-label-item custom-border-radius custom-height">
+          <ion-select placeholder="Select entity" (ionChange)="handleChange($event)">
+            <ion-select-option *ngFor="let entity of extractedData" [value]="entity.value">{{ entity.label }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2" sizeXs="6" sizeLg="4" *ngFor="let card of formConfig?.big_number_form">
+        <ion-card style="border-radius: 10px;">
+          <ion-card-content>
+            <h1 style="text-align: center; color: var( --ion-color-primary);" class="my-0">{{ card.value }}</h1>
+            <p style="text-align: center;" class="my-0">{{ card.description }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+<div class="tables inner-div-style">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="tables-colum d-flex flex-justify-space-between flex-align-items-center">
+        <h3>Session Type</h3>
+        <ion-button (click)="downloadData()">Download table</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        table
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</div>
 </ion-content>
 
-
-<ion-footer class="ion-no-border">
-</ion-footer>
