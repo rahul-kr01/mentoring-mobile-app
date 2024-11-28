@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { CREATE_SESSION_FORM, MANAGERS_CREATE_SESSION_FORM } from 'src/app/core/constants/formConstant';
+import { BIG_NUMBER_DASHBOARD_FORM, CREATE_SESSION_FORM, MANAGERS_CREATE_SESSION_FORM } from 'src/app/core/constants/formConstant';
 import { localKeys } from 'src/app/core/constants/localStorage.keys';
 import { manageSessionAction, permissions } from 'src/app/core/constants/permissionsConstant';
 import { LocalStorageService } from 'src/app/core/services';
@@ -18,8 +18,7 @@ export class DashboardPage implements OnInit {
   startDate: Date | null = null;
   endDate: Date | null = null;
   entityList: any;
-  userDefault: any = 'Mentee';
-  user: any;
+  user: any = ['mentee', 'mentor', 'session_manager', 'org_admin'];
   extractedData: any;
   sessions = ['All', 'Private', 'Public'];
   selectedSessionType = 'All';
@@ -40,6 +39,8 @@ export class DashboardPage implements OnInit {
       },
     ]
   }
+  filteredCards: any[] = [];
+  bigNumbersConfig: any;
 
 
   constructor(private permissionService: PermissionService,
@@ -49,7 +50,7 @@ export class DashboardPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    let formConfig =(await this.permissionService.hasPermission({ module: permissions.MANAGE_SESSION, action: manageSessionAction.SESSION_ACTIONS })) ? MANAGERS_CREATE_SESSION_FORM : CREATE_SESSION_FORM
+    let formConfig =(await this.permissionService.hasPermission({ module: permissions.MANAGE_SESSION, action: manageSessionAction.SESSION_ACTIONS })) ? MANAGERS_CREATE_SESSION_FORM : CREATE_SESSION_FORM;
     const result = await this.form.getForm(formConfig);
     const formData = _.get(result, 'data.fields');
     const entityNames = await this.form.getEntityNames(formData);
@@ -62,6 +63,13 @@ export class DashboardPage implements OnInit {
     if(response){
       this.user = await this.profileService.getUserRole(response);
     }
+
+    // big number form
+
+    let bigNumberFormConfig = BIG_NUMBER_DASHBOARD_FORM;
+    const bigNUmberresult = await this.form.getForm(bigNumberFormConfig);
+    this.bigNumbersConfig = _.get(bigNUmberresult, 'data.fields');
+    this.filteredCards = !this.filteredCards.length ? this.bigNumbersConfig[this.user[0]] : [];
   }
 
   public headerConfig: any = {
@@ -79,27 +87,6 @@ selectRoles(){
   console.log('select roles')
 }
 
-
-
-
-
-
-formConfig: any = {
-  big_number_form:[
-    {
-      value: 90,
-      description: 'session conducted'
-    },
-    {
-      value: 90,
-      description: 'session attended'
-    },
-    {
-      value: 90,
-      description: 'session created'
-    }
-  ]
-}
 
 
 
@@ -141,8 +128,15 @@ calculateDates(): void {
   console.log(this.startDate, this.endDate,"start and end");
 }
 
-handleChange(e) {
-  console.log('ionChange fired with value: ' + e.detail.value);
+handleRoleChange(e) {
+  const selectedRole = e.detail.value;
+  this.filteredCards = this.bigNumbersConfig[selectedRole] || [];
+}
+handleSessionTypeChange(event){
+
+}
+handleEntityChange(event){
+
 }
 
 }

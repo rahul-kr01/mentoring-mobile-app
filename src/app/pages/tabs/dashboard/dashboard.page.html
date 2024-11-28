@@ -4,7 +4,7 @@
   <div class="select-role d-flex">
     <h2 style="margin: revert;">Role</h2>
     <ion-item *ngIf="user?.length" fill="outline" style="margin-left: 4%;" class="no-label-item custom-height">
-      <ion-select placeholder="Select Role" [value]="user[0]" (ionChnage)="selectRoles()">
+      <ion-select placeholder="Select Role" [value]="user[0]" (ionChange)="handleRoleChange($event)">
         <ion-select-option *ngFor="let role of user" [value]="role">{{ role | snakeCaseToUpperCase }}</ion-select-option>
       </ion-select>
     </ion-item>
@@ -27,7 +27,7 @@
       <ion-col size="3" sizeXs="6" sizeLg="2">
         <h3>Session Type</h3>
         <ion-item fill="outline" class="no-label-item custom-border-radius custom-height">
-          <ion-select [value]="selectedSessionType" (ionChange)="handleChange($event)">
+          <ion-select [value]="selectedSessionType" (ionChange)="handleSessionTypeChange($event)">
             <ion-select-option *ngFor="let session of sessions" [value]="session">{{ session }}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -35,26 +35,25 @@
       <ion-col size="3" sizeXs="6" sizeLg="2">
         <h3>Entity Type</h3>
         <ion-item fill="outline" class="no-label-item custom-border-radius custom-height">
-          <ion-select placeholder="Select entity" (ionChange)="handleChange($event)">
+          <ion-select placeholder="Select entity" (ionChange)="handleEntityChange($event)">
             <ion-select-option *ngFor="let entity of extractedData" [value]="entity.value">{{ entity.label }}</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
-
   <ion-grid>
-    <ion-row>
-      <ion-col size="2" sizeXs="6" sizeLg="4" *ngFor="let card of formConfig?.big_number_form">
-        <ion-card style="border-radius: 10px;">
-          <ion-card-content>
-            <h1 style="text-align: center; color: var( --ion-color-primary);" class="my-0">{{ card.value }}</h1>
-            <p style="text-align: center;" class="my-0">{{ card.description }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-row>
+    <ion-col size="2" sizeXs="6" sizeLg="4" *ngFor="let card of filteredCards">
+      <ion-card style="border-radius: 10px;">
+        <ion-card-content>
+          <h1 style="text-align: center; color: var(--ion-color-primary);" class="my-0">{{ card.value }}</h1>
+          <p style="text-align: center;" class="my-0">{{ card.label }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 </div>
 <div class="tables inner-div-style">
   <ion-grid>

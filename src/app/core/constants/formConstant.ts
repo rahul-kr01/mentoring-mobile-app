@@ -49,3 +49,8 @@ export const MANAGERS_CREATE_SESSION_FORM: IFORM = {
 	"type": "managersSession",
 	"sub_type": "managersSessionForm",
 }
+
+export const BIG_NUMBER_DASHBOARD_FORM: IFORM = {
+	"type": "bignumberDashboard",
+	"sub_type": "bignumberDashboardForm"
+}
