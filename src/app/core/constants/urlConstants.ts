@@ -19,10 +19,10 @@ export const urlConstants = {
         UPCOMING_SESSIONS:"/mentoring/v1/mentors/upcomingSessions/",
         SHARE_MENTOR_PROFILE:"/mentoring/v1/mentors/share/",
         REPORT_ISSUE:"/mentoring/v1/issues/create",
-        PROFILE_READ: "/mentoring/v1/profile/read",
+        PROFILE_READ: "/interface/v1/profile/read",
         CREATED_SESSIONS: "/mentoring/v1/mentors/createdSessions?page=",
         MENTORS_DIRECTORY_LIST: "/mentoring/v1/mentors/list?page=",
-        MENTORS_PROFILE_DETAILS: "/mentoring/v1/mentors/details/",
+        MENTORS_PROFILE_DETAILS: "/interface/v1/mentors/details/",
         SESSION_DOWNLOAD_CSV: "/mentoring/v1/sessions/getSampleCSV",
         SESSION_BULK_UPLOAD: "/mentoring/v1/sessions/bulkSessionCreate",
         
