@@ -250,7 +250,7 @@ export class DynamicFormComponent implements OnInit {
       datetimePicker._selected = this.myForm.get(control.name).value;
     setTimeout(()=>{
       datetimePicker.open();
-    },700)
+    },500)
   }
 
   selectionChanged(control, event){

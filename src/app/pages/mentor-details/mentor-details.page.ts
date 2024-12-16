@@ -34,6 +34,10 @@ export class MentorDetailsPage implements OnInit {
   detailData = {
     form: [
       {
+        title: 'ABOUT',
+        key: 'about',
+      },
+      {
         title: "DESIGNATION",
         key: "designation"
       },
@@ -42,9 +46,20 @@ export class MentorDetailsPage implements OnInit {
         key: "organizationName"
       },
       {
-        title: "Competencies",
-        key: "competency",
-        info: 'Competencies associated with this mentor'
+        title: 'YEAR_OF_EXPERIENCE',
+        key: 'experience',
+      },
+      {
+        title: 'KEY_AREAS_OF_EXPERTISE',
+        key: 'area_of_expertise',
+      },
+      {
+        title: "EDUCATION_QUALIFICATION",
+        key: "education_qualification"
+      },
+      {
+        title: "LANGUAGES",
+        key: "languages" 
       }
     ],
     data: {
@@ -72,7 +87,7 @@ export class MentorDetailsPage implements OnInit {
     routerParams.params.subscribe(params => {
       this.mentorId = this.buttonConfig.meta.id = params.id;
       this.userService.getUserValue().then(async (result) => {
-        if (result || window['env']['isAuthBypassed']) {
+        if (result) {
           this.getMentor();
         } else {
           this.router.navigate([`/${CommonRoutes.AUTH}/${CommonRoutes.LOGIN}`], { queryParams: { mentorId: this.mentorId } })

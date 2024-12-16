@@ -11,6 +11,7 @@ import { ProfileService } from 'src/app/core/services/profile/profile.service';
 import { Location } from '@angular/common';
 import { PermissionService } from 'src/app/core/services/permission/permission.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -82,16 +83,14 @@ export class HomeSearchPage implements OnInit {
     this.filterData = await this.utilService.transformToFilterData(data, obj);
   }
 
-  search(searchText, event) {
-    if (event.key === 'Enter') {
-      if (searchText.length >= 3) {
-        this.searchText = searchText;
-        this.showSelectedCriteria = this.criteriaChip;
-        this.isOpen = false;
-        this.fetchSessionList();
-      } else {
-        this.toast.showToast("ENTER_MIN_CHARACTER", "danger");
-      }
+  search(event) {
+    if (event.length >= 3) {
+      this.searchText = event;
+      this.showSelectedCriteria = this.criteriaChip;
+      this.isOpen = false;
+      this.fetchSessionList()
+    } else {
+      this.toast.showToast("ENTER_MIN_CHARACTER","danger");
     }
   }
 
@@ -136,7 +135,7 @@ export class HomeSearchPage implements OnInit {
 
   async eventAction(event) {
     this.user = await this.localStorage.getLocalData(localKeys.USER_DETAILS)
-    if (this.user.about || window['env']['isAuthBypassed']) {
+    if (this.user.about || environment['isAuthBypassed']) {
       switch (event.type) {
         case 'cardSelect':
           this.router.navigate([`/${CommonRoutes.SESSIONS_DETAILS}/${event.data.id}`]);

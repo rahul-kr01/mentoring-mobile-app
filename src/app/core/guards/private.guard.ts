@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonRoutes } from 'src/global.routes';
 import { UserService } from '../services/user/user.service';
 import { UtilService } from '../services';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class PrivateGuard implements CanActivate {
       if (result) {
         this.utilService?.alertClose();
         return true;
-      } else if(window['env']['isAuthBypassed']) {
+      } else if(environment['isAuthBypassed']) {
         return true;
       } else {
         this.router.navigate([`/${CommonRoutes.AUTH}/${CommonRoutes.LANDING_PAGE}`]);
