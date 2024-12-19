@@ -1092,5 +1092,339 @@
         ]
       }
     }
-  }
+  },
+  {
+    "type": "bignumberDashboard",
+    "sub_type": "bignumberDashboardForm",
+    "action": "skip",
+    "data": {
+        "template_name": "defaultTemplate",
+        "fields": {
+            "mentee": [
+                {
+                    "label": "Total number of sessions attended",
+                    "Url": "",
+                    "value": "90",
+                    "Meta": {
+                        "color": "#fff",
+                        "background": "#ccc",
+                        "textAlign": ""
+                    }
+                },
+                {
+                    "label": "Total hours of learning",
+                    "Url": "",
+                    "value": "90",
+                    "Meta": {
+                        "color": "#fff",
+                        "background": "#ccc",
+                        "textAlign": ""
+                    }
+                },
+                {
+                  "form":{
+                    "controls":[
+                      {
+                        "label": "Duration",
+                        "value": "duration",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Week",
+                            "value": "week"
+                          },
+                          {
+                            "label": "Month",
+                            "value": "month"
+                          },
+                          {
+                            "label": "Quater",
+                            "value": "quater"
+                          }
+                        ]
+                      },
+                      {
+                        "label": "Session type",
+                        "value": "session_type",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "All",
+                            "value": "all"
+                          },
+                          {
+                            "label": "Public",
+                            "value": "pub"
+                          },
+                          {
+                            "label": "Private",
+                            "value": "pr"
+                          }
+                        ]
+
+                      },
+                      {
+                        "label": "Categories",
+                        "value": "categories",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Education qualification",
+                            "value": "edu"
+                          },
+                          {
+                            "label": "Communication",
+                            "value": "com"
+                          },
+                          {
+                            "label": "School process",
+                            "value": "sp"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+            ],
+            "mentor": [
+                {
+                    "label": "Total number of sessions conducted",
+                    "Url": "",
+                    "value": "90",
+                    "Meta": {
+                        "color": "#fff",
+                        "background": "#ccc",
+                        "textAlign": ""
+                    }
+                },
+                {
+                    "label": "Total hours of Mentoring conducted",
+                    "Url": "",
+                    "value": "90",
+                    "Meta": {
+                        "color": "#fff",
+                        "background": "#ccc",
+                        "textAlign": ""
+                    }
+                },
+                {
+                  "form":{
+                    "controls":[
+                      {
+                        "label": "Duration",
+                        "value": "duration",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Week",
+                            "value": "week"
+                          },
+                          {
+                            "label": "Month",
+                            "value": "month"
+                          },
+                          {
+                            "label": "Quater",
+                            "value": "quater"
+                          }
+                        ]
+                      },
+                      {
+                        "label": "Session type",
+                        "value": "session_type",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "All",
+                            "value": "all"
+                          },
+                          {
+                            "label": "Public",
+                            "value": "pub"
+                          },
+                          {
+                            "label": "Private",
+                            "value": "pr"
+                          }
+                        ]
+
+                      },
+                      {
+                        "label": "Categories",
+                        "value": "categories",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Education qualification",
+                            "value": "edu"
+                          },
+                          {
+                            "label": "Communication",
+                            "value": "com"
+                          },
+                          {
+                            "label": "School process",
+                            "value": "sp"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+            ],
+            "session_manager": [
+                {
+                    "label": "Total hours of sessions created by SM",
+                    "Url": "",
+                    "value": "90"
+                },
+                {
+                    "label": "Total number of hours of mentoring conducted",
+                    "Url": "",
+                    "value": "90"
+                },
+                {
+                  "form":{
+                    "controls":[
+                      {
+                        "label": "Duration",
+                        "value": "duration",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Week",
+                            "value": "week"
+                          },
+                          {
+                            "label": "Month",
+                            "value": "month"
+                          },
+                          {
+                            "label": "Quater",
+                            "value": "quater"
+                          }
+                        ]
+                      },
+                      {
+                        "label": "Session type",
+                        "value": "session_type",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "All",
+                            "value": "all"
+                          },
+                          {
+                            "label": "Public",
+                            "value": "pub"
+                          },
+                          {
+                            "label": "Private",
+                            "value": "pr"
+                          }
+                        ]
+
+                      },
+                      {
+                        "label": "Categories",
+                        "value": "categories",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Education qualification",
+                            "value": "edu"
+                          },
+                          {
+                            "label": "Communication",
+                            "value": "com"
+                          },
+                          {
+                            "label": "School process",
+                            "value": "sp"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+            ],
+            "org_admin": [
+                {
+                    "label": "Total hours of sessions created in the Org",
+                    "Url": "",
+                    "value": ""
+                },
+                {
+                    "label": "Total number of hours of mentoring conducted in the org",
+                    "Url": "",
+                    "value": ""
+                },
+                {
+                  "form":{
+                    "controls":[
+                      {
+                        "label": "Duration",
+                        "value": "duration",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Week",
+                            "value": "week"
+                          },
+                          {
+                            "label": "Month",
+                            "value": "month"
+                          },
+                          {
+                            "label": "Quater",
+                            "value": "quater"
+                          }
+                        ]
+                      },
+                      {
+                        "label": "Session type",
+                        "value": "session_type",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "All",
+                            "value": "all"
+                          },
+                          {
+                            "label": "Public",
+                            "value": "pub"
+                          },
+                          {
+                            "label": "Private",
+                            "value": "pr"
+                          }
+                        ]
+
+                      },
+                      {
+                        "label": "Categories",
+                        "value": "categories",
+                        "type": "select",
+                        "options":[
+                          {
+                            "label": "Education qualification",
+                            "value": "edu"
+                          },
+                          {
+                            "label": "Communication",
+                            "value": "com"
+                          },
+                          {
+                            "label": "School process",
+                            "value": "sp"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+            ]
+        }
+    }
+}
 ]

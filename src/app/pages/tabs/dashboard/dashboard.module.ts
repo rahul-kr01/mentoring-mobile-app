@@ -7,6 +7,8 @@ import { DashboardPage } from './dashboard.page';
 
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+
+import { GenericChartModule } from 'generic-chart';
 @NgModule({
   imports: [
     IonicModule,
@@ -14,7 +16,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     FormsModule,
     RouterModule.forChild([{ path: '', component: DashboardPage }]),
     DashboardPageRoutingModule,
-    SharedModule
+    SharedModule,
+    GenericChartModule
   ],
   declarations: [DashboardPage],
 })

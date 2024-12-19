@@ -17,7 +17,7 @@
       <ion-col size="3" sizeXs="6" sizeLg="2">
         <h3>Duration</h3>
         <ion-item fill="outline" lines="none" class="no-label-item custom-border-radius custom-height">
-          <ion-select placeholder="Select Duration" [value]="selectedDuration" (ionChange)="calculateDates()">
+          <ion-select placeholder="Select Duration" [value]="selectedDuration" (ionChange)="calculateDates($event)">
             <ion-select-option *ngFor="let duration of durationConfig?.durations" [value]="duration.value">
               {{ duration.label }}
             </ion-select-option>
@@ -53,13 +53,19 @@
       </ion-card>
     </ion-col>
   </ion-row>
+  <ion-row>
+    <ion-col>
+      <lib-line-chart [data]="data"></lib-line-chart>
+      <lib-bar-chart [data]="data"></lib-bar-chart>
+    </ion-col>
+  </ion-row>
 </ion-grid>
 </div>
 <div class="tables inner-div-style">
   <ion-grid>
     <ion-row>
       <ion-col class="tables-colum d-flex flex-justify-space-between flex-align-items-center">
-        <h3>Session Type</h3>
+        <h3>Session details</h3>
         <ion-button (click)="downloadData()">Download table</ion-button>
       </ion-col>
     </ion-row>
