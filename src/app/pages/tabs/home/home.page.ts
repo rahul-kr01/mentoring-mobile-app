@@ -52,6 +52,7 @@ export class HomePage implements OnInit {
   chips= [];
   criteriaChip: any;
   searchText: string;
+  isMobile: boolean;
   constructor(
     private router: Router,
     private profileService: ProfileService,
@@ -61,7 +62,9 @@ export class HomePage implements OnInit {
     private localStorage: LocalStorageService,
     private toast: ToastService,
     private permissionService: PermissionService,
-    private utilService: UtilService) { }
+    private utilService: UtilService) { 
+      this.isMobile = utilService.isMobile()
+    }
 
   async ngOnInit() {
     await this.getUser();
