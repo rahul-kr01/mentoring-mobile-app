@@ -51,7 +51,7 @@ export class HomeSearchPage implements OnInit {
   searchTextSubscription: Subscription;
   criteriaChipSubscription: Subscription;
   showSelectedCriteria: any;
-  isMobile: boolean;
+  isMobile: boolean = false;
 
   constructor(private modalCtrl: ModalController, private router: Router, private toast: ToastService,
     private sessionService: SessionService,

@@ -43,7 +43,7 @@ export class MentorSearchDirectoryPage implements OnInit {
   limit: any;
   chips = [];
   showSelectedCriteria: any;
-  isMobile: boolean;
+  isMobile: boolean = false;
 
   constructor(
     private router: Router,

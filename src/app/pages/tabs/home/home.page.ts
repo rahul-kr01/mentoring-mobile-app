@@ -52,7 +52,7 @@ export class HomePage implements OnInit {
   chips= [];
   criteriaChip: any;
   searchText: string;
-  isMobile: boolean;
+  isMobile: boolean = false;
   constructor(
     private router: Router,
     private profileService: ProfileService,
