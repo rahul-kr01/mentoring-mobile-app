@@ -7,6 +7,10 @@
     inputmode="search"
     cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isOpen = !isOpen"></ion-searchbar>
   </div>
+  <div [ngClass]="{'information_circle_is_mobile': isMobile}" style="text-align: center;">
+    <ion-icon style="vertical-align: middle;" name="information-circle-outline"></ion-icon>
+    {{"ENTER_MIN_CHARACTER" | translate}}
+  </div>
 </app-page-header>
 <ng-template
   cdkConnectedOverlay
