@@ -43,6 +43,7 @@ export class MentorSearchDirectoryPage implements OnInit {
   limit: any;
   chips = [];
   showSelectedCriteria: any;
+  isMobile: boolean = false;
 
   constructor(
     private router: Router,
@@ -52,7 +53,7 @@ export class MentorSearchDirectoryPage implements OnInit {
     private formService: FormService,
     private utilService: UtilService,
     private toast: ToastService
-  ) { }
+  ) { this.isMobile = utilService.isMobile() }
 
   ngOnInit() { }
 
