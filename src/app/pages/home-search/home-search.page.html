@@ -2,15 +2,11 @@
   <div class="d-flex flex-justify-center my-8">
     <ion-searchbar class="search-bar" [debounce]="1000" placeholder="{{'HOME_SEARCH_PLACEHOLDER' | translate}}"  
     #event [value]="searchText"
-    (ionChange)="search(event.value)"
+    (keydown.enter)="search(event.value)"
     type="search"
     inputmode="search"
     cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isOpen = !isOpen">
     </ion-searchbar>
-  </div>
-  <div [ngClass]="{'information_circle_is_mobile': isMobile}" style="text-align: center;">
-    <ion-icon style="vertical-align: middle;" name="information-circle-outline"></ion-icon>
-    {{"ENTER_MIN_CHARACTER" | translate}}
   </div>
 </app-page-header>
 <ion-toolbar>
