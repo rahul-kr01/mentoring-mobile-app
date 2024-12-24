@@ -51,7 +51,6 @@ export class HomeSearchPage implements OnInit {
   searchTextSubscription: Subscription;
   criteriaChipSubscription: Subscription;
   showSelectedCriteria: any;
-  isMobile: boolean = false;
 
   constructor(private modalCtrl: ModalController, private router: Router, private toast: ToastService,
     private sessionService: SessionService,
@@ -61,7 +60,7 @@ export class HomeSearchPage implements OnInit {
     private permissionService: PermissionService,
     private formService: FormService,
     private utilService: UtilService,
-  ) { this.isMobile = utilService.isMobile() }
+  ) { }
 
   async ngOnInit() {
     this.searchTextSubscription = this.utilService.currentSearchText.subscribe(searchText => {
