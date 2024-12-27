@@ -53,7 +53,7 @@
 .filter{
   margin-left: 18%;
   margin-right: 5%;
-  border: 1px solid rgb(182, 177, 177);
+  border: 1px solid var(--gray);
   border-radius: 7px;
 }
 
@@ -76,21 +76,21 @@
 }
   
 .no-label-item ion-select {
-    width: 100%; /* Ensure the select takes up the full width of the item */
+    width: 100%;
 }
   
 
 .custom-border-radius {
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden; /* Ensure content respects the border radius */
-    --background: #fff; /* Set background color */
-    --border-color: #090909; /* Set custom border color */
+    border-radius: 8px;
+    overflow: hidden;
+    --background: var(--white);
+    --border-color: var(--black);
   }
   
-  /* Target the inner native elements to apply the same styles */
+  
   .custom-border-radius::part(native) {
-    border-radius: 8px; /* Ensure inner elements match the parent's border radius */
-    background-color: #fff; /* Inherit background from parent */
+    border-radius: 8px;
+    background-color: var(--white);
   }
   
   .custom-height{
