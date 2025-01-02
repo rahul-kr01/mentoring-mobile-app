@@ -17,7 +17,7 @@
           <h3>{{ control.label }}</h3>
           <ion-item fill="outline" lines="none" class="no-label-item custom-border-radius custom-height">
             <ion-select [placeholder]="'Select ' + control.label" [value]="control.defaultValue" (ionChange)="handleFormControlChange(control.value, $event)" style="font-size: 13px;">
-              <ion-select-option class="custom-font-size" *ngFor="let option of control.options" [value]="option.value">
+              <ion-select-option class="custom-font-size" *ngFor="let option of control.entities" [value]="option.value">
                 {{ option.label }}
               </ion-select-option>
             </ion-select>
@@ -42,7 +42,7 @@
 
       <ion-row>
         <ion-col>
-
+          <lib-bar-chart [data]="data"></lib-bar-chart>
         </ion-col>
       </ion-row>
     </ion-grid>

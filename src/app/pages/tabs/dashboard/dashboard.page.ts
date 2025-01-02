@@ -4,7 +4,6 @@ import { BIG_NUMBER_DASHBOARD_FORM } from 'src/app/core/constants/formConstant';
 import { localKeys } from 'src/app/core/constants/localStorage.keys';
 import { HttpService, LocalStorageService } from 'src/app/core/services';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { PermissionService } from 'src/app/core/services/permission/permission.service';
 import { ProfileService } from 'src/app/core/services/profile/profile.service';
 import * as moment from 'moment';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
@@ -15,14 +14,12 @@ import { urlConstants } from 'src/app/core/constants/urlConstants';
   styleUrls: ['dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  selectedDuration = 'month';
   user: any;
   sessions: any;
   filteredCards: any[] = [];
   bigNumbersConfig: any;
   startDate: moment.Moment;
   endDate: moment.Moment;
-  filterType: any = 'session';
 
   /////
   apiResponse = [
@@ -51,6 +48,15 @@ export class DashboardPage implements OnInit {
   filteredFormData: any;
   bigNumberFormData: any;
   result: any;
+  selectedRole: any;
+  report_code: any;
+  session_type: any = 'ALL';
+  filterType: any = 'session';
+  selectedDuration: any = 'month';
+  endDateEpoch: number;
+  startDateEpoch: number;
+  categories: any;
+  tableDataDownload: boolean = false;
 
   constructor(
     private form: FormService,
@@ -60,8 +66,7 @@ export class DashboardPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.result = await this.dashboardReportApi();
-    console.log(this.result)
+    this.result = await this.reportFilterListApi();
     this.data = this.transformApiResponse(this.apiResponse);
     const response = await this.localStorage.getLocalData(localKeys.USER_DETAILS);
     if (response) {
@@ -74,8 +79,11 @@ export class DashboardPage implements OnInit {
     const bigNumberResult = await this.form.getForm(bigNumberFormConfig);
     this.bigNumberFormData = _.get(bigNumberResult, 'data.fields');
     this.filteredCards = !this.filteredCards.length ? this.bigNumberFormData[this.user[0]].bigNumbers : [];
-
-    this.handleRoleChange({ detail: { value: this.user[0] } });
+    if(this.user){
+      this.calculateDuration();
+      this.handleRoleChange({ detail: { value: this.user[0] } });
+      this.bigNumberCount();
+    }
   }
 
   public headerConfig: any = {
@@ -85,42 +93,37 @@ export class DashboardPage implements OnInit {
   };
 
 
-  downloadData() {
+  async downloadData() {
     console.log('Download initiated');
+    this.tableDataDownload = true;
   }
-
-  selectRoles() {
-    console.log('select roles')
-  }
-
 
 
   calculateDates(event): void {
-    const today = moment();
     this.selectedDuration = event.detail.value;
+    this.calculateDuration();
+    this.bigNumberCount();
+  }
 
-    // Calculate the first and last days of the year
+  async calculateDuration(){
+    const today = moment();
     const firstDayOfYear = moment().startOf('year');
     const lastDayOfYear = moment().endOf('year');
 
     switch (this.selectedDuration) {
       case 'week':
-        // Start of the week (Sunday) and end of the week (Saturday)
         this.startDate = today.clone().startOf('week');
         this.endDate = today.clone().endOf('week');
         break;
       case 'month':
-        // Start and end of the current month
         this.startDate = today.clone().startOf('month');
         this.endDate = today.clone().endOf('month');
         break;
       case 'quarter':
-        // Start and end of the current quarter
         this.startDate = today.clone().startOf('quarter');
         this.endDate = today.clone().endOf('quarter');
         break;
       case 'year':
-        // Start and end of the current year
         this.startDate = firstDayOfYear.clone();
         this.endDate = lastDayOfYear.clone();
         break;
@@ -129,31 +132,36 @@ export class DashboardPage implements OnInit {
         this.endDate = null;
     }
 
-    // Format the dates for display
-    const formattedStartDate = this.startDate ? this.startDate.format('DD/MM/YYYY HH:mm [IST]') : null;
-    const formattedEndDate = this.endDate ? this.endDate.format('DD/MM/YYYY HH:mm [IST]') : null;
+    // const formattedStartDate = this.startDate ? this.startDate.format('DD/MM/YYYY HH:mm [IST]') : null;
+    // const formattedEndDate = this.endDate ? this.endDate.format('DD/MM/YYYY HH:mm [IST]') : null;
 
-    // Convert to epoch time (milliseconds)
     const startDateEpoch = this.startDate ? this.startDate.valueOf() : null;
     const endDateEpoch = this.endDate ? this.endDate.valueOf() : null;
 
-    console.log('Start Date:', formattedStartDate, startDateEpoch);
-    console.log('End Date:', formattedEndDate, endDateEpoch);
+    this.startDateEpoch = startDateEpoch;
+    this.endDateEpoch = endDateEpoch;
   }
 
-  handleRoleChange(e) {
-    const selectedRole = e.detail.value;
-    this.filteredFormData = this.bigNumberFormData[selectedRole] || [];
+  async handleRoleChange(e) {
+    this.selectedRole = e.detail.value;
+    this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
     this.filteredCards = this.filteredFormData?.bigNumbers || [];
+    if(this.filteredCards){
+      this.bigNumberCount();
+    }
 
     const formConfig = this.filteredFormData.form;
     this.dynamicFormControls = formConfig?.controls || [];
+    this.updateFormData(this.result);
+    this.reportData()
   }
-  handleSessionTypeChange(event) {
 
-  }
-  handleEntityChange(event) {
-
+  async bigNumberCount(){
+    for (const element of this.filteredCards) {
+      this.report_code = element.Url;
+      const result = await this.reportData();
+      element.value = result.data.count || 0;
+    }
   }
 
   transformApiResponse(response: any[]): any {
@@ -190,19 +198,64 @@ export class DashboardPage implements OnInit {
       ]
     };
   }
-
-
-
-
-  handleFormControlChange(controlName: string, event: any) {
-    const selectedValue = event.detail.value;
-    console.log(`${controlName} changed to: ${selectedValue}`);
-    // Handle control-specific logic here
+  
+  handleFormControlChange(value: any,event: any) {
+    switch(value) {
+      case 'duration':
+        this.selectedDuration = event.detail.value;
+        this.calculateDuration();
+        this.bigNumberCount();
+        this.reportData();
+        break;
+      
+      case 'type':
+        const selectedType = event.detail.value;
+        this.session_type = selectedType;
+        this.bigNumberCount();
+        this.reportData();
+        break;
+      
+      case 'categories':
+        const selectedCategories = event.detail.value;
+        this.categories = selectedCategories;
+        this.bigNumberCount();
+        this.reportData();
+        break;
+    }
   }
 
-  async dashboardReportApi() {
+  async updateFormData(formData){
+    Object.keys(this.bigNumberFormData).forEach((role) => {
+      const roleData = this.bigNumberFormData[role];
+      const firstObject = this.transformData(roleData, formData);
+      this.dynamicFormControls = firstObject.form.controls;
+    });
+  }
+
+  transformData(firstObj: any, secondObj: any): any {
+    const updatedFirstObj = JSON.parse(JSON.stringify(firstObj));
+
+    updatedFirstObj.form.controls = updatedFirstObj.form.controls.map((control: any) => {
+      const matchingEntityType = secondObj.entity_types[control.value];
+
+      if (matchingEntityType) {
+        return {
+          ...control,
+          entities: matchingEntityType[0].entities, // Replace entities with matching data
+          type: 'select', // Retain the 'select' type,
+          label: matchingEntityType[0].label,
+        };
+      }
+
+      return control; // If no match, return the original control
+    });
+
+    return updatedFirstObj;
+  }
+
+  async reportFilterListApi() {
     const config = {
-      url: urlConstants.API_URLS.DASHBOARD_REPORTING + 'filter_type=' + this.filterType + '&' + 'report_filter=' + true,
+      url: urlConstants.API_URLS.DASHBOARD_REPORT_FILTER + 'filter_type=' + this.filterType + '&' + 'report_filter=' + true,
       payload: {},
     };
     try {
@@ -213,5 +266,22 @@ export class DashboardPage implements OnInit {
     }
   }
 
-
+  async reportData(){
+    const config = {
+      url: urlConstants.API_URLS.DASHBOARD_REPORT_DATA + 
+      'report_code=' + this.report_code + 
+      '&report_role=' + this.selectedRole + 
+      '&session_type=' + this.session_type +
+      '&start_date=' + (this.startDateEpoch ? this.startDateEpoch:'') + '&end_date='+ (this.endDateEpoch ? this.endDateEpoch : '') + 
+      '&entities_value=' + (this.categories ? this.categories : '') + 
+      '&download_csv=' + this.tableDataDownload,
+      payload: {},
+    };
+    try {
+      let data: any = await this.httpService.get(config);
+      return data.result
+    }
+    catch (error) {
+    }
+  }
 }
