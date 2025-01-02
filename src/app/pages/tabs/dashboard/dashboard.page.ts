@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { BIG_NUMBER_DASHBOARD_FORM } from 'src/app/core/constants/formConstant';
-import { localKeys } from 'src/app/core/constants/localStorage.keys';
-import { HttpService, LocalStorageService } from 'src/app/core/services';
+import { HttpService } from 'src/app/core/services';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { ProfileService } from 'src/app/core/services/profile/profile.service';
 import * as moment from 'moment';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
 
@@ -60,18 +58,13 @@ export class DashboardPage implements OnInit {
 
   constructor(
     private form: FormService,
-    private localStorage: LocalStorageService,
-    private profileService: ProfileService,
     private httpService: HttpService
   ) { }
 
   async ngOnInit() {
     this.result = await this.reportFilterListApi();
+    this.user = await this.getUserRole(this.result);
     this.data = this.transformApiResponse(this.apiResponse);
-    const response = await this.localStorage.getLocalData(localKeys.USER_DETAILS);
-    if (response) {
-      this.user = await this.profileService.getUserRole(response);
-    }
 
     // big number form
 
@@ -283,5 +276,14 @@ export class DashboardPage implements OnInit {
     }
     catch (error) {
     }
+  }
+  getUserRole(userDetails) {
+    var roles = userDetails.roles.map(function(item) {
+      return item['title'];
+    });
+    if (!roles.includes("mentee")) {
+      roles.unshift("mentee");
+    }
+    return roles
   }
 }
