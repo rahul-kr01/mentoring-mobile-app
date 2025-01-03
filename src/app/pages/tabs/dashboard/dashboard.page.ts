@@ -19,7 +19,7 @@ export class DashboardPage implements OnInit {
   startDate: moment.Moment;
   endDate: moment.Moment;
 
-  /////
+  ///// chart api demo response
   apiResponse = [
     {
       "from": "1-1-2023",
@@ -40,6 +40,7 @@ export class DashboardPage implements OnInit {
       "conductedSession": 10
     }
   ];
+  //////
   data: any;
 
   dynamicFormControls: any[] = [];
@@ -155,6 +156,9 @@ export class DashboardPage implements OnInit {
     }
   }
 
+
+  /// chart related code
+
   transformApiResponse(response: any[]): any {
     const labels: string[] = [];
     const createdSessionData: number[] = [];
@@ -190,6 +194,10 @@ export class DashboardPage implements OnInit {
     };
   }
   
+
+/////////
+
+
   handleFormControlChange(value: any,event: any) {
     switch(value) {
       case 'duration':
