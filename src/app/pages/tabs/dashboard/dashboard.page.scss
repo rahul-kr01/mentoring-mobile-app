@@ -84,7 +84,7 @@
     border-radius: 8px;
     overflow: hidden;
     --background: var(--white);
-    --border-color: var(--black);
+    --border-color: var(--gray);
   }
   
   
@@ -98,5 +98,9 @@
   }
 h3{
     margin-bottom: 5px !important;
+}
+
+.filter-column{
+    padding: 10px !important;
 }
   

@@ -13,7 +13,7 @@
   <div class="graphs-and-charts inner-div-style">
     <ion-grid>
       <ion-row>
-        <ion-col size="3" sizeXs="6" sizeLg="3" *ngFor="let control of dynamicFormControls">
+        <ion-col size="3" sizeXs="6" sizeLg="3" class="filter-column" *ngFor="let control of dynamicFormControls">
           <h3>{{ control.label }}</h3>
           <ion-item fill="outline" lines="none" class="no-label-item custom-border-radius custom-height">
             <ion-select [placeholder]="'Select ' + control.label" [value]="control.defaultValue" (ionChange)="handleFormControlChange(control.value, $event)" style="font-size: 13px;">
@@ -27,7 +27,7 @@
 
 
       <ion-row>
-        <ion-col size="2" sizeXs="6" sizeLg="4" *ngFor="let card of filteredCards">
+        <ion-col size="2" sizeXs="6" sizeLg="5" style="padding: 0 !important;" *ngFor="let card of filteredCards">
           <ion-card style="border-radius: 10px;">
             <ion-card-content>
               <h1 style="text-align: center; color: var(--ion-color-primary);" class="my-0">

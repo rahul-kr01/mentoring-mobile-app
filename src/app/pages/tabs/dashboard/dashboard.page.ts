@@ -68,8 +68,7 @@ export class DashboardPage implements OnInit {
 
     // big number form
 
-    let bigNumberFormConfig = BIG_NUMBER_DASHBOARD_FORM;
-    const bigNumberResult = await this.form.getForm(bigNumberFormConfig);
+    const bigNumberResult = await this.form.getForm(BIG_NUMBER_DASHBOARD_FORM);
     this.bigNumberFormData = _.get(bigNumberResult, 'data.fields');
     this.filteredCards = !this.filteredCards.length ? this.bigNumberFormData[this.user[0]].bigNumbers : [];
     if(this.user){
@@ -146,14 +145,13 @@ export class DashboardPage implements OnInit {
     const formConfig = this.filteredFormData.form;
     this.dynamicFormControls = formConfig?.controls || [];
     this.updateFormData(this.result);
-    this.reportData()
+    this.preparedUrl()
   }
 
   async bigNumberCount(){
     for (const element of this.filteredCards) {
       this.report_code = element.Url;
-      const result = await this.reportData();
-      element.value = result.data.count || 0;
+      this.preparedUrl(element.value)
     }
   }
 
@@ -197,24 +195,19 @@ export class DashboardPage implements OnInit {
       case 'duration':
         this.selectedDuration = event.detail.value;
         this.calculateDuration();
-        this.bigNumberCount();
-        this.reportData();
         break;
       
       case 'type':
-        const selectedType = event.detail.value;
-        this.session_type = selectedType;
-        this.bigNumberCount();
-        this.reportData();
+        this.session_type = event.detail.value;
         break;
       
       case 'categories':
-        const selectedCategories = event.detail.value;
-        this.categories = selectedCategories;
-        this.bigNumberCount();
-        this.reportData();
+        this.categories = event.detail.value;
         break;
     }
+
+    this.bigNumberCount();
+    this.preparedUrl()
   }
 
   async updateFormData(formData){
@@ -259,15 +252,9 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  async reportData(){
+  async reportData(url){
     const config = {
-      url: urlConstants.API_URLS.DASHBOARD_REPORT_DATA + 
-      'report_code=' + this.report_code + 
-      '&report_role=' + this.selectedRole + 
-      '&session_type=' + this.session_type +
-      '&start_date=' + (this.startDateEpoch ? this.startDateEpoch:'') + '&end_date='+ (this.endDateEpoch ? this.endDateEpoch : '') + 
-      '&entities_value=' + (this.categories ? this.categories : '') + 
-      '&download_csv=' + this.tableDataDownload,
+      url: url,
       payload: {},
     };
     try {
@@ -286,4 +273,18 @@ export class DashboardPage implements OnInit {
     }
     return roles
   }
+
+
+  async preparedUrl(value?){
+    let params = urlConstants.API_URLS.DASHBOARD_REPORT_DATA + 
+    'report_code=' + this.report_code + 
+    '&report_role=' + this.selectedRole + 
+    '&session_type=' + this.session_type +
+    '&start_date=' + (this.startDateEpoch ? this.startDateEpoch:'') + '&end_date='+ (this.endDateEpoch ? this.endDateEpoch : '') + 
+    '&entities_value=' + (this.categories ? this.categories : '');
+    const resp =  await this.reportData(params)
+    if(value){
+      value = resp.data.count;
+    }
+    }
 }
