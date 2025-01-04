@@ -96,6 +96,7 @@ export class MentorSearchDirectoryPage implements OnInit {
     this.chips.splice(index, 1);
     this.removeFilteredData(chip)
     this.getUrlQueryData();
+    this.getMentors();
   }
 
   async onClickFilter() {

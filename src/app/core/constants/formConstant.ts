@@ -54,3 +54,7 @@ export const BIG_NUMBER_DASHBOARD_FORM: IFORM = {
 	"type": "bignumberDashboard",
 	"sub_type": "bignumberDashboardForm"
 }
+export const DASHBOARD: IFORM = {
+	"type": "dashboard",
+	"sub_type": "dashboardForm",
+}

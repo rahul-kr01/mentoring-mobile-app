@@ -29,6 +29,5 @@ npm-debug.log*
 /platforms
 /plugins
 /www
-/src/environments/
 /.angular
 /mentoring-key.keystore

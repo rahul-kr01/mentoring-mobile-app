@@ -60,7 +60,7 @@ export class HomeSearchPage implements OnInit {
     private permissionService: PermissionService,
     private formService: FormService,
     private utilService: UtilService,
-  ) {  }
+  ) { }
 
   async ngOnInit() {
     this.searchTextSubscription = this.utilService.currentSearchText.subscribe(searchText => {

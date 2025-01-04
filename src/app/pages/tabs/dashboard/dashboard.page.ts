@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { BIG_NUMBER_DASHBOARD_FORM } from 'src/app/core/constants/formConstant';
 import { HttpService } from 'src/app/core/services';
 import { FormService } from 'src/app/core/services/form/form.service';
 import * as moment from 'moment';
 import { urlConstants } from 'src/app/core/constants/urlConstants';
+import { Component, OnInit } from '@angular/core';
+import { Chart } from 'chart.js/auto';
+import { ProfileService } from 'src/app/core/services/profile/profile.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -56,11 +58,25 @@ export class DashboardPage implements OnInit {
   startDateEpoch: number;
   categories: any;
   tableDataDownload: boolean = false;
+  loading: boolean = false;
+  chartData: any;
+  completeDashboardForms: any;
+  chartCreationJson: any;
+  isMentor: boolean;
+  segment: string;
+  dataAvailable: boolean;
+  chart: any;
 
   constructor(
-    private form: FormService,
-    private httpService: HttpService
-  ) { }
+    private profile: ProfileService,
+    private apiService: HttpService,
+    private form: FormService) { }
+
+  ionViewWillEnter() {
+    this.isMentor = this.profile.isMentor;
+    this.segment = this.isMentor ? "mentor" : "mentee";
+    this.dataAvailable = true;
+  }
 
   async ngOnInit() {
     this.result = await this.reportFilterListApi();
@@ -253,7 +269,7 @@ export class DashboardPage implements OnInit {
       payload: {},
     };
     try {
-      let data: any = await this.httpService.get(config);
+      let data: any = await this.apiService.get(config);
       return data.result
     }
     catch (error) {
@@ -266,7 +282,7 @@ export class DashboardPage implements OnInit {
       payload: {},
     };
     try {
-      let data: any = await this.httpService.get(config);
+      let data: any = await this.apiService.get(config);
       return data.result
     }
     catch (error) {
@@ -280,6 +296,32 @@ export class DashboardPage implements OnInit {
       roles.unshift("mentee");
     }
     return roles
+  }
+  createChart() {
+    this.chartCreationJson = this.segment === 'mentor' ? JSON.parse(JSON.stringify(this.completeDashboardForms.mentor)) : JSON.parse(JSON.stringify(this.completeDashboardForms.mentee))
+    const maxDataValue = Math.max(
+      ...(
+          this.segment === 'mentor' ?
+          [this.chartData.total_session_created, this.chartData.total_session_assigned, this.chartData.total_session_hosted] :
+          [this.chartData.total_session_enrolled, this.chartData.total_session_attended]
+      )
+  );
+  this.chartCreationJson.forEach(chart => {
+    if (chart.options && chart.options.scales && chart.options.scales.y && chart.options.scales.y.ticks) {
+      chart.options.scales.y.ticks.stepSize = this.calculateStepSize(maxDataValue);
+    }
+    if (chart.data && chart.data.datasets) {
+      chart.data.datasets.forEach(dataset => {
+        dataset.data = dataset.data.map(item => this.chartData[item] || 0);
+      });
+    }
+  });
+    this.chart = new Chart('MyChart', this.chartCreationJson[0]);
+    this.dataAvailable = !!(this.chartData?.total_session_created ||this.chartData?.total_session_enrolled ||this.chartData?.total_session_assigned ||this.chartData?.total_session_hosted);
+  }
+
+  calculateStepSize(maxDataValue) {
+    return Math.ceil(maxDataValue / 5);
   }
 
 
@@ -296,3 +338,4 @@ export class DashboardPage implements OnInit {
     }
     }
 }
+

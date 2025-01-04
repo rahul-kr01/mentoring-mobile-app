@@ -180,6 +180,7 @@ export class ProfileService {
     if (!roles.includes("mentee")) {
       roles.unshift("mentee");
     }
+    this.isMentor = roles.map(s => s.toLowerCase()).includes('mentor')?true:false;
     return roles
   }
 
