@@ -118,6 +118,7 @@ export class PrivatePage implements OnInit {
      this.db.init();
      setTimeout(async ()=>{
        this.userRoles = await this.localStorage.getLocalData(localKeys.USER_ROLES);
+       this.isMentor = this.userRoles.includes('mentor')?true:false;
      },1000);
      setTimeout(() => {
        document.querySelector('ion-menu')?.shadowRoot?.querySelector('.menu-inner')?.setAttribute('style', 'border-radius:8px 8px 0px 0px');
