@@ -41,8 +41,8 @@
 
 
       <ion-row>
-        <ion-col>
-          <lib-bar-chart [data]="data"></lib-bar-chart>
+        <ion-col *ngIf="chartBody[selectedRole]?.chartUrl && chartBody[selectedRole]?.headers">
+          <lib-bar-chart [url]="chartBody[selectedRole]?.chartUrl" [headers]="chartBody[selectedRole]?.headers" [legends]="chartBody[selectedRole]?.dataLabels"></lib-bar-chart>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -50,18 +50,8 @@
 
   <div class="tables inner-div-style">
     <ion-grid>
-      <ion-row>
-        <ion-col class="tables-colum d-flex flex-justify-space-between flex-align-items-center">
-          <h3>Session details</h3>
-          <ion-button (click)="downloadData()">Download table</ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <table>
-            <!-- Placeholder for Table Data -->
-          </table>
-        </ion-col>
+      <ion-row *ngIf="chartBody[selectedRole]?.tableUrl">
+        <lib-table [url]="chartBody[selectedRole]?.tableUrl" [headers]="chartBody[selectedRole]?.headers" [showDownload]="true" [title]="chartBody[selectedRole]?.tableTitle"></lib-table>
       </ion-row>
     </ion-grid>
   </div>

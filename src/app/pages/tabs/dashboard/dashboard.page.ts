@@ -7,6 +7,7 @@ import { urlConstants } from 'src/app/core/constants/urlConstants';
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { ProfileService } from 'src/app/core/services/profile/profile.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,7 @@ import { ProfileService } from 'src/app/core/services/profile/profile.service';
   styleUrls: ['dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+
   user: any;
   sessions: any;
   filteredCards: any[] = [];
@@ -21,27 +23,6 @@ export class DashboardPage implements OnInit {
   startDate: moment.Moment;
   endDate: moment.Moment;
 
-  ///// chart api demo response
-  apiResponse = [
-    {
-      "from": "1-1-2023",
-      "to": "31-1-2023",
-      "createdSession": 15,
-      "conductedSession": 10
-    },
-    {
-      "from": "1-2-2023",
-      "to": "28-2-2023",
-      "createdSession": 25,
-      "conductedSession": 15
-    },
-    {
-      "from": "1-3-2023",
-      "to": "31-3-2023",
-      "createdSession": 15,
-      "conductedSession": 10
-    }
-  ];
   //////
   data: any;
 
@@ -66,12 +47,45 @@ export class DashboardPage implements OnInit {
   segment: string;
   dataAvailable: boolean;
   chart: any;
-
+  labels = [];
+  groupBy: any;
+  chartBody: any = {};
+  // this should be come from form confg.
+  chartBodyConfig :any= {
+    mentee: {
+      dataLabels: [{'sessions_enrolled':'Number of Sessions Enrolled', backgroundColor:"#832215"}, {'session_attended':'Number Sessions attended', backgroundColor:"#999999"}],
+      chartUrl:  "",
+      report_code:'split_of_sessions_enrolled_and_attended_by_user',
+      table_report_code:'mentee_session_details',
+      tableUrl:'',    
+      tableTitle:'Session Details',
+      headers : ''
+    },
+    mentor: {
+      dataLabels: [{'session_created':'Num Sessions Created/Assigned', backgroundColor:"#832215"}, {'sessions_conducted':'Num of Sessions conducted',backgroundColor:"#999999"}],
+      chartUrl:'',
+      report_code:'split_of_sessions_conducted',
+      table_report_code:'mentoring_session_details',
+      tableUrl:'',
+      tableTitle:'Mentoring Session Details',
+      headers:''
+    },
+    session_manager: {
+      dataLabels: [{'session_created':'Number Sessions created', backgroundColor:"#832215"}, {'sessions_conducted':'Number of sessions conducted',backgroundColor:"#999999"}],
+      chartUrl:"",
+      report_code:'split_of_sessions_created_and_conducted',
+      table_report_code:'session_manger_session_details',
+      tableUrl:'',   
+      tableTitle:'Session details',
+      headers:''
+    },
+  }
   constructor(
     private profile: ProfileService,
     private apiService: HttpService,
     private form: FormService) { }
 
+  
   ionViewWillEnter() {
     this.isMentor = this.profile.isMentor;
     this.segment = this.isMentor ? "mentor" : "mentee";
@@ -81,17 +95,17 @@ export class DashboardPage implements OnInit {
   async ngOnInit() {
     this.result = await this.reportFilterListApi();
     this.user = await this.getUserRole(this.result);
-    this.data = this.transformApiResponse(this.apiResponse);
-
-    // big number form
-
+    //  read this from form config
+    this.chartBody = this.chartBodyConfig
     const bigNumberResult = await this.form.getForm(BIG_NUMBER_DASHBOARD_FORM);
     this.bigNumberFormData = _.get(bigNumberResult, 'data.fields');
     this.filteredCards = !this.filteredCards.length ? this.bigNumberFormData[this.user[0]].bigNumbers : [];
+    this.selectedRole = this.user[0];
+    this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
+    const formConfig = this.filteredFormData.form;
+    this.dynamicFormControls = formConfig?.controls || [];
     if(this.user){
-      this.calculateDuration();
-      this.handleRoleChange({ detail: { value: this.user[0] } });
-      this.bigNumberCount();
+      this.initialDuration();
     }
   }
 
@@ -103,116 +117,93 @@ export class DashboardPage implements OnInit {
 
 
   async downloadData() {
-    console.log('Download initiated');
     this.tableDataDownload = true;
   }
 
 
-  calculateDates(event): void {
-    this.selectedDuration = event.detail.value;
-    this.calculateDuration();
-    this.bigNumberCount();
+  async initialDuration(){
+    const today = moment();
+    this.startDate = today.clone().startOf('month').add(1, 'day');
+    this.endDate = today.clone().endOf('month');
+    this.groupBy = 'day';
+    const startDateEpoch = this.startDate ? this.startDate.unix() : null;
+    const endDateEpoch = this.endDate ? this.endDate.unix() : null;
+    this.startDateEpoch = startDateEpoch;
+    this.endDateEpoch = endDateEpoch;
+    this.prepareTableUrl();
+    this.prepareChartUrl();
+    if( this.filteredCards){
+      this.bigNumberCount();
+    }
   }
 
   async calculateDuration(){
     const today = moment();
     const firstDayOfYear = moment().startOf('year');
     const lastDayOfYear = moment().endOf('year');
-
+  
     switch (this.selectedDuration) {
       case 'week':
-        this.startDate = today.clone().startOf('week');
+        this.startDate = today.clone().startOf('week').add(1, 'day');
         this.endDate = today.clone().endOf('week');
+        this.groupBy = 'day';
         break;
       case 'month':
-        this.startDate = today.clone().startOf('month');
+        this.startDate = today.clone().startOf('month').add(1, 'day');
         this.endDate = today.clone().endOf('month');
+        this.groupBy = 'day';
         break;
       case 'quarter':
-        this.startDate = today.clone().startOf('quarter');
+        this.startDate = today.clone().startOf('quarter').add(1, 'day');
         this.endDate = today.clone().endOf('quarter');
+        this.groupBy = 'month';
         break;
       case 'year':
-        this.startDate = firstDayOfYear.clone();
+        this.startDate = firstDayOfYear.clone().date(1).add(1, 'day');
         this.endDate = lastDayOfYear.clone();
+        this.groupBy = 'month';
         break;
       default:
         this.startDate = null;
         this.endDate = null;
     }
-
-    // const formattedStartDate = this.startDate ? this.startDate.format('DD/MM/YYYY HH:mm [IST]') : null;
-    // const formattedEndDate = this.endDate ? this.endDate.format('DD/MM/YYYY HH:mm [IST]') : null;
-
-    const startDateEpoch = this.startDate ? this.startDate.valueOf() : null;
-    const endDateEpoch = this.endDate ? this.endDate.valueOf() : null;
-
+    const startDateEpoch = this.startDate ? this.startDate.unix() : null;
+    const endDateEpoch = this.endDate ? this.endDate.unix() : null;
     this.startDateEpoch = startDateEpoch;
     this.endDateEpoch = endDateEpoch;
+    this.chartBody = {};
+      setTimeout(() => {
+       this.bigNumberCount();
+       this.prepareChartUrl();
+      },100);
   }
 
   async handleRoleChange(e) {
     this.selectedRole = e.detail.value;
-    this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
+   this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
     this.filteredCards = this.filteredFormData?.bigNumbers || [];
     if(this.filteredCards){
       this.bigNumberCount();
     }
-
-    const formConfig = this.filteredFormData.form;
-    this.dynamicFormControls = formConfig?.controls || [];
+   
     this.updateFormData(this.result);
-    this.preparedUrl()
+    this.chartBody = {};
+    setTimeout(() => { 
+      this.prepareChartUrl();
+      this.prepareTableUrl();
+      },100)
   }
 
   async bigNumberCount(){
-    for (const element of this.filteredCards) {
+    for (let element of this.filteredCards) {
       this.report_code = element.Url;
-      this.preparedUrl(element.value)
+      let value   =  await this.preparedUrl(element.value);
+      if(value){
+        element.value = value;
+      }
     }
   }
-
-
-  /// chart related code
-
-  transformApiResponse(response: any[]): any {
-    const labels: string[] = [];
-    const createdSessionData: number[] = [];
-    const conductedSessionData: number[] = [];
-
-
-    response.forEach(item => {
-      const monthName = moment(item.from, "D-M-YYYY").format("MMMM");
-      labels.push(monthName);
-
-      createdSessionData.push(item.createdSession);
-      conductedSessionData.push(item.conductedSession);
-    });
-
-    return {
-      labels,
-      datasets: [
-        {
-          label: "Created Sessions",
-          data: createdSessionData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1
-        },
-        {
-          label: "Conducted Sessions",
-          data: conductedSessionData,
-          backgroundColor: "rgba(255, 159, 64, 0.6)",
-          borderColor: "rgba(255, 159, 64, 1)",
-          borderWidth: 1
-        }
-      ]
-    };
-  }
   
-
-/////////
-
 
   handleFormControlChange(value: any,event: any) {
     switch(value) {
@@ -231,7 +222,11 @@ export class DashboardPage implements OnInit {
     }
 
     this.bigNumberCount();
-    this.preparedUrl()
+    this.chartBody[this.selectedRole] ={};
+    this.chartBody={};
+    setTimeout(() => {  
+    this.prepareChartUrl();
+    },100)
   }
 
   async updateFormData(formData){
@@ -251,13 +246,12 @@ export class DashboardPage implements OnInit {
       if (matchingEntityType) {
         return {
           ...control,
-          entities: matchingEntityType[0].entities, // Replace entities with matching data
-          type: 'select', // Retain the 'select' type,
+          entities: matchingEntityType[0].entities, 
+          type: 'select',
           label: matchingEntityType[0].label,
         };
       }
-
-      return control; // If no match, return the original control
+      return control;
     });
 
     return updatedFirstObj;
@@ -325,17 +319,41 @@ export class DashboardPage implements OnInit {
   }
 
 
-  async preparedUrl(value?){
-    let params = urlConstants.API_URLS.DASHBOARD_REPORT_DATA + 
-    'report_code=' + this.report_code + 
-    '&report_role=' + this.selectedRole + 
-    '&session_type=' + this.session_type +
-    '&start_date=' + (this.startDateEpoch ? this.startDateEpoch:'') + '&end_date='+ (this.endDateEpoch ? this.endDateEpoch : '') + 
-    '&entities_value=' + (this.categories ? this.categories : '');
-    const resp =  await this.reportData(params)
-    if(value){
-      value = resp.data.count;
+
+  async preparedUrl(value?) {
+    const queryParams = `&report_role=${this.selectedRole}` +
+      `&session_type=${this.session_type}` +
+      `&start_date=${this.startDateEpoch || ''}` +
+      `&end_date=${this.endDateEpoch || ''}` +
+      `&entities_value=${this.categories || ''}` +
+      `&groupBy=${this.groupBy}`;
+    const params = `${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +
+      `report_code=${this.report_code}${queryParams}`;
+    const resp = await this.reportData(params);
+    if (value) {
+      return resp.data.count;
     }
-    }
+  }
+  async prepareTableUrl(){
+    const queryParams = `&report_role=${this.selectedRole}` +
+    `&start_date=${this.startDateEpoch || ''}` +
+    `&session_type=${this.session_type}` +
+    `&end_date=${this.endDateEpoch || ''}` ;
+  this.chartBody = { ...this.chartBodyConfig };
+  this.chartBody[this.selectedRole].tableUrl +=  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody[this.selectedRole].table_report_code +queryParams;
+  this.chartBody[this.selectedRole].headers = await this.apiService.setHeaders();
+  }
+  async prepareChartUrl(){
+    const queryParams = `&report_role=${this.selectedRole}` +
+    `&session_type=${this.session_type}` +
+    `&start_date=${this.startDateEpoch || ''}` +
+    `&end_date=${this.endDateEpoch || ''}` +
+    `&entities_value=${this.categories || ''}` +
+    `&groupBy=${this.groupBy}`;
+
+  this.chartBody = { ...this.chartBodyConfig };
+  this.chartBody[this.selectedRole].chartUrl = `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` + 'report_code='+ this.chartBody[this.selectedRole].report_code + queryParams;
+  this.chartBody[this.selectedRole].headers = await this.apiService.setHeaders();
+  }
 }
 
