@@ -1480,6 +1480,7 @@
   {
     "type": "sampleCsvDownload",
     "sub_type": "sampleCsvDownload",
+    "action": "skip",
     "data": {
       "fields": {
         "controls": [
@@ -1491,100 +1492,604 @@
     }
   },
   {
-    "type": "dashboard",
-    "sub_type": "dashboardForm",
+    "type": "bignumberDashboard",
+    "sub_type": "bignumberDashboardForm",
+    "action": "skip",
     "data": {
       "template_name": "defaultTemplate",
       "fields": {
-        "mentor": [
-          {
-            "type": "bar",
-            "data": {
-              "labels": [
-                "Total sessions created",
-                "Total sessions assigned",
-                "Total sessions conducted"
-              ],
-              "datasets": [
-                {
-                  "label": "",
-                  "data": [
-                    "total_session_created",
-                    "total_session_assigned",
-                    "total_session_hosted"
-                  ],
-                  "backgroundColor": [
-                    "#4e81bd",
-                    "#fdc107",
-                    "#5ab251"
-                  ],
-                  "borderWidth": 1,
-                  "barThickness": 50
-                }
-              ]
-            },
-            "options": {
-              "responsive": true,
-              "maintainAspectRatio": false,
-              "plugins": {
-                "legend": {
-                  "display": false
-                }
-              },
-              "scales": {
-                "y": {
-                  "ticks": {
-                    "stepSize": 0
+        "mentee": {
+          "ALL": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "Total number of Private sessions attended",
+                    "key": "private_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
                   },
-                  "grid": {
-                    "display": false
+                  {
+                    "label": "Total number of Public sessions attended",
+                    "key": "public_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total number of sessions attended",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
                   }
-                },
-                "x": {
-                  "grid": {
-                    "display": false
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "mentee": [
-          {
-            "type": "pie",
-            "data": {
-              "labels": [
-                "Total sessions enrolled",
-                "Total sessions attended"
-              ],
-              "datasets": [
-                {
-                  "label": "",
-                  "data": [
-                    "total_session_enrolled",
-                    "total_session_attended"
-                  ],
-                  "backgroundColor": [
-                    "#ffdf00",
-                    "#7b7b7b"
-                  ],
-                  "borderWidth": 1,
-                  "barThickness": 50
-                }
-              ]
-            },
-            "options": {
-              "responsive": true,
-              "maintainAspectRatio": false,
-              "plugins": {
-                "legend": {
-                  "display": false
-                }
+                ]
               },
-              "scales": {}
-            }
+              {
+                "Url": "total_hours_of_learning",
+                "data": [
+                  {
+                    "label": "Total hours of private learning",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of public learning",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of learning",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "PUBLIC": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "Total number of sessions attended",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_learning",
+                "data": [
+                  {
+                    "label": "Total hours of learning",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "PRIVATE": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "Total number of sessions attended",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_learning",
+                "data": [
+                  {
+                    "label": "Total hours of learning",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "form": {
+            "controls": [
+              {
+                "label": "Duration",
+                "value": "duration",
+                "type": "select",
+                "defaultValue": "month",
+                "entities": [
+                  {
+                    "label": "This week",
+                    "value": "week"
+                  },
+                  {
+                    "label": "This month",
+                    "value": "month"
+                  },
+                  {
+                    "label": "This quarter",
+                    "value": "quarter"
+                  }
+                ]
+              },
+              {
+                "label": "Session type",
+                "value": "type",
+                "type": "select",
+                "defaultValue": "ALL",
+                "entities": [
+                  {
+                    "label": "All",
+                    "value": "ALL"
+                  },
+                  {
+                    "label": "Public",
+                    "value": "PUBLIC"
+                  },
+                  {
+                    "label": "Private",
+                    "value": "PRIVATE"
+                  }
+                ]
+              },
+              {
+                "label": "Categories",
+                "value": "categories",
+                "type": "select",
+                "defaultValue": "",
+                "entities": [
+                  {
+                    "label": "Education qualification",
+                    "value": "edu"
+                  },
+                  {
+                    "label": "Communication",
+                    "value": "com"
+                  },
+                  {
+                    "label": "School process",
+                    "value": "sp"
+                  }
+                ]
+              }
+            ]
           }
-        ]
+        },
+        "mentor": {
+          "ALL": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_conducted",
+                "data": [
+                  {
+                    "label": "Total number of Private sessions conducted",
+                    "key": "private_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of Public sessions conducted",
+                    "key": "public_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of sessions conducted",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "Total hours of Private mentoring conducted",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of Public mentoring conducted",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of mentoring conducted",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "PUBLIC": {
+            "bigNumbers": [
+              {
+                "Url": "total_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "Total hours of Mentoring conducted",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "",
+                "data": [{}]
+              }
+            ]
+          },
+          "PRIVATE": {
+            "bigNumbers": [
+              {
+                "Url": "total_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "Total hours of Mentoring conducted",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "",
+                "data": [{}]
+              }
+            ]
+          },
+          "form": {
+            "controls": [
+              {
+                "label": "Duration",
+                "value": "duration",
+                "type": "select",
+                "defaultValue": "month",
+                "entities": [
+                  {
+                    "label": "This week",
+                    "value": "week"
+                  },
+                  {
+                    "label": "This month",
+                    "value": "month"
+                  },
+                  {
+                    "label": "This quarter",
+                    "value": "quarter"
+                  }
+                ]
+              },
+              {
+                "label": "Session type",
+                "value": "type",
+                "type": "select",
+                "defaultValue": "ALL",
+                "entities": [
+                  {
+                    "label": "All",
+                    "value": "ALL"
+                  },
+                  {
+                    "label": "Public",
+                    "value": "PUBLIC"
+                  },
+                  {
+                    "label": "Private",
+                    "value": "PRIVATE"
+                  }
+                ]
+              },
+              {
+                "label": "Categories",
+                "value": "categories",
+                "type": "select",
+                "defaultValue": "",
+                "entities": [
+                  {
+                    "label": "Education qualification",
+                    "value": "edu"
+                  },
+                  {
+                    "label": "Communication",
+                    "value": "com"
+                  },
+                  {
+                    "label": "School process",
+                    "value": "sp"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "session_manager": {
+          "ALL": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "Total number of hours of private mentoring conducted",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total number of hours of public mentoring conducted",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total number of hours of mentoring conducted",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_sessions_created_by_session_manager",
+                "data": [
+                  {
+                    "label": "Total hours of private sessions created by SM",
+                    "key": "total_private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of public  sessions created by SM",
+                    "key": "total_public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of sessions created by SM",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "PUBLIC": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "Total number of hours of mentoring conducted",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of sessions created by SM",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "PRIVATE": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "Total number of hours of mentoring conducted",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "Total hours of sessions created by SM",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "form": {
+            "controls": [
+              {
+                "label": "Duration",
+                "value": "duration",
+                "type": "select",
+                "defaultValue": "month",
+                "entities": [
+                  {
+                    "label": "This week",
+                    "value": "week"
+                  },
+                  {
+                    "label": "This month",
+                    "value": "month"
+                  },
+                  {
+                    "label": "This quarter",
+                    "value": "quarter"
+                  }
+                ]
+              },
+              {
+                "label": "Session type",
+                "value": "type",
+                "type": "select",
+                "defaultValue": "ALL",
+                "entities": [
+                  {
+                    "label": "All",
+                    "value": "ALL"
+                  },
+                  {
+                    "label": "Public",
+                    "value": "PUBLIC"
+                  },
+                  {
+                    "label": "Private",
+                    "value": "PRIVATE"
+                  }
+                ]
+              },
+              {
+                "label": "Categories",
+                "value": "categories",
+                "type": "select",
+                "defaultValue": "",
+                "entities": [
+                  {
+                    "label": "Education qualification",
+                    "value": "edu"
+                  },
+                  {
+                    "label": "Communication",
+                    "value": "com"
+                  },
+                  {
+                    "label": "School process",
+                    "value": "sp"
+                  }
+                ]
+              }
+            ]
+          }
+        }
       }
     }
   }

@@ -2,7 +2,7 @@
 
 <ion-content>
   <div class="select-role d-flex">
-    <h2 style="margin: revert;">Role</h2>
+    <h2 style="margin: revert;">{{"ROLE" | translate}}</h2>
     <ion-item *ngIf="user?.length" fill="outline" style="margin-left: 4%;" class="no-label-item custom-height">
       <ion-select placeholder="Select Role" [value]="user[0]" (ionChange)="handleRoleChange($event)">
         <ion-select-option *ngFor="let role of user" [value]="role">{{ role | snakeCaseToUpperCase }}</ion-select-option>
