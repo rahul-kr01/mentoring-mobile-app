@@ -1788,7 +1788,7 @@
                 "data": [
                   {
                     "label": "Total hours of Mentoring conducted",
-                    "key": "total_count",
+                    "key": "public_hours",
                     "value": "0",
                     "Meta": {
                       "color": "#fff",
@@ -1799,8 +1799,19 @@
                 ]
               },
               {
-                "Url": "",
-                "data": [{}]
+                "Url": "total_number_of_sessions_conducted",
+                "data": [
+                  {
+                    "label": "Total number of sessions conducted",
+                    "key": "public_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1811,7 +1822,7 @@
                 "data": [
                   {
                     "label": "Total hours of Mentoring conducted",
-                    "key": "total_count",
+                    "key": "private_hours",
                     "value": "0",
                     "Meta": {
                       "color": "#fff",
@@ -1822,8 +1833,19 @@
                 ]
               },
               {
-                "Url": "",
-                "data": [{}]
+                "Url": "total_number_of_sessions_conducted",
+                "data": [
+                  {
+                    "label": "Total number of sessions conducted",
+                    "key": "private_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1970,21 +1992,26 @@
           "PUBLIC": {
             "bigNumbers": [
               {
-                "Url": "total_number_of_sessions_attended",
+                "Url": "total_number_of_hours_of_mentoring_conducted",
                 "data": [
                   {
-                    "label": "Total number of hours of mentoring conducted",
-                    "key": "total_hours",
+                    "label": "Total number of hours of public mentoring conducted",
+                    "key": "public_hours",
                     "value": "0",
                     "Meta": {
                       "color": "#fff",
                       "background": "#ccc",
                       "textAlign": ""
                     }
-                  },
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_sessions_created_by_session_manager",
+                "data": [
                   {
-                    "label": "Total hours of sessions created by SM",
-                    "key": "total_hours",
+                    "label": "Total hours of public sessions created by SM",
+                    "key": "total_public_hours",
                     "value": "0",
                     "Meta": {
                       "color": "#fff",
@@ -1999,7 +2026,7 @@
           "PRIVATE": {
             "bigNumbers": [
               {
-                "Url": "total_number_of_sessions_attended",
+                "Url": "total_number_of_hours_of_mentoring_conducted",
                 "data": [
                   {
                     "label": "Total number of hours of mentoring conducted",
@@ -2010,10 +2037,15 @@
                       "background": "#ccc",
                       "textAlign": ""
                     }
-                  },
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_sessions_created_by_session_manager",
+                "data": [
                   {
-                    "label": "Total hours of sessions created by SM",
-                    "key": "total_hours",
+                    "label": "Total hours of private sessions created by SM",
+                    "key": "total_private_hours",
                     "value": "0",
                     "Meta": {
                       "color": "#fff",
