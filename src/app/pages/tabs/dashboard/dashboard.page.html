@@ -27,22 +27,22 @@
 
 
       <ion-row>
-        <ion-col size="2" sizeXs="6" sizeLg="5" style="padding: 0 !important;" *ngFor="let card of filteredCards">
+        <ng-container  *ngFor="let card of filteredCards[session_type]?.bigNumbers">
+        <ion-col [size]="card?.data.length > 2 ? 3 : 2" sizeXs="12" [sizeLg]="card?.data.length > 2 ? 4 : 6" style="padding: 0 !important;"  *ngFor="let data of card?.data" >
           <ion-card style="border-radius: 10px;">
             <ion-card-content>
               <h1 style="text-align: center; color: var(--ion-color-primary);" class="my-0">
-                {{ card.value }}
+                {{ data.value }}
               </h1>
-              <p style="text-align: center;" class="my-0">{{ card.label }}</p>
+              <p style="text-align: center;" class="my-0">{{ data.label }}</p>
             </ion-card-content>
           </ion-card>
         </ion-col>
+        </ng-container>
       </ion-row>
-
-
       <ion-row>
         <ion-col *ngIf="chartBody[selectedRole]?.chartUrl && chartBody[selectedRole]?.headers">
-          <lib-bar-chart [url]="chartBody[selectedRole]?.chartUrl" [headers]="chartBody[selectedRole]?.headers" [legends]="chartBody[selectedRole]?.dataLabels"></lib-bar-chart>
+          <lib-bar-chart [url]="chartBody[selectedRole]?.chartUrl" [headers]="chartBody[selectedRole]?.headers" [legends]="chartBody[selectedRole]?.dataLabels" [sessionType]="session_type"></lib-bar-chart>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -51,7 +51,7 @@
   <div class="tables inner-div-style">
     <ion-grid>
       <ion-row *ngIf="chartBody[selectedRole]?.tableUrl">
-        <lib-table [url]="chartBody[selectedRole]?.tableUrl" [headers]="chartBody[selectedRole]?.headers" [showDownload]="true" [title]="chartBody[selectedRole]?.tableTitle"></lib-table>
+        <lib-table [url]="chartBody[selectedRole]?.tableUrl" [headers]="chartBody[selectedRole]?.headers" [showDownload]="true" [title]="chartBody[selectedRole]?.tableTitle"  style="width: 100%;"></lib-table>
       </ion-row>
     </ion-grid>
   </div>

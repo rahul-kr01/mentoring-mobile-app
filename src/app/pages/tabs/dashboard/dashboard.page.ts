@@ -18,14 +18,11 @@ export class DashboardPage implements OnInit {
 
   user: any;
   sessions: any;
-  filteredCards: any[] = [];
+  filteredCards: any = [];
   bigNumbersConfig: any;
   startDate: moment.Moment;
   endDate: moment.Moment;
-
-  //////
   data: any;
-
   dynamicFormControls: any[] = [];
   filteredFormData: any;
   bigNumberFormData: any;
@@ -53,7 +50,15 @@ export class DashboardPage implements OnInit {
   // this should be come from form confg.
   chartBodyConfig :any= {
     mentee: {
-      dataLabels: [{'sessions_enrolled':'Number of Sessions Enrolled', backgroundColor:"#832215"}, {'session_attended':'Number Sessions attended', backgroundColor:"#999999"}],
+      dataLabels: {"ALL":[{'private_session_enrolled':'Number of Private Sessions Enrolled', backgroundColor:"#832215"},
+        {'public_session_enrolled':'Number of Public Sessions Enrolled', backgroundColor:"#b94a3b"},
+        {'private_session_attended':'Number of Private Sessions Attended', backgroundColor:"#999999"},
+        {'public_session_attended':'Number of Public Sessions Attended', backgroundColor:"#858585"}],
+
+    "PUBLIC":[{'public_session_enrolled':'Number of Sessions Enrolled', backgroundColor:"#832215"}, {'public_session_attended':'Number of Sessions Attended', backgroundColor:"#999999"}], 
+    "PRIVATE":[{'private_session_enrolled':'Number of Sessions Enrolled', backgroundColor:"#832215"},
+      {'private_session_attended':'Number of  Sessions Attended', backgroundColor:"#999999"}
+    ]},
       chartUrl:  "",
       report_code:'split_of_sessions_enrolled_and_attended_by_user',
       table_report_code:'mentee_session_details',
@@ -62,7 +67,16 @@ export class DashboardPage implements OnInit {
       headers : ''
     },
     mentor: {
-      dataLabels: [{'session_created':'Num Sessions Created/Assigned', backgroundColor:"#832215"}, {'sessions_conducted':'Num of Sessions conducted',backgroundColor:"#999999"}],
+      dataLabels:  {"ALL":[{'private_sessions_created':'Number of Private Sessions Created/Assigned', backgroundColor:"#832215"},
+        {'public_sessions_created':'Number of Public Sessions Created/Assigned', backgroundColor:"#b94a3b"},
+        {'private_sessions_conducted':'Number of Private Sessions conducted', backgroundColor:"#999999"},
+        {'public_sessions_conducted':'Number of Public Sessions conducted', backgroundColor:"#858585"}],
+
+    "PUBLIC":[{'public_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"}, 
+      {'public_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"}], 
+    "PRIVATE":[{'private_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"},
+      {'private_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"},
+    ]},
       chartUrl:'',
       report_code:'split_of_sessions_conducted',
       table_report_code:'mentoring_session_details',
@@ -71,7 +85,15 @@ export class DashboardPage implements OnInit {
       headers:''
     },
     session_manager: {
-      dataLabels: [{'session_created':'Number Sessions created', backgroundColor:"#832215"}, {'sessions_conducted':'Number of sessions conducted',backgroundColor:"#999999"}],
+      dataLabels:  {"ALL":[{'private_sessions_created':'Number Private Sessions created', backgroundColor:"#832215"},
+        {'public_sessions_created':'Number Public Sessions created', backgroundColor:"#b94a3b"},
+        {'private_sessions_conducted':'Number of Private Sessions conducted', backgroundColor:"#999999"},
+        {'public_sessions_conducted':'Number of Public Sessions conducted', backgroundColor:"#858585"}],
+    "PUBLIC":[{'public_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"}, 
+      {'public_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"}], 
+    "PRIVATE":[{'private_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"},
+      {'private_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"},
+    ]},
       chartUrl:"",
       report_code:'split_of_sessions_created_and_conducted',
       table_report_code:'session_manger_session_details',
@@ -96,10 +118,11 @@ export class DashboardPage implements OnInit {
     this.result = await this.reportFilterListApi();
     this.user = await this.getUserRole(this.result);
     //  read this from form config
+    // this.chartBodyConfig = form data
     this.chartBody = this.chartBodyConfig
     const bigNumberResult = await this.form.getForm(BIG_NUMBER_DASHBOARD_FORM);
     this.bigNumberFormData = _.get(bigNumberResult, 'data.fields');
-    this.filteredCards = !this.filteredCards.length ? this.bigNumberFormData[this.user[0]].bigNumbers : [];
+    this.filteredCards = !this.filteredCards.length ? this.bigNumberFormData[this.user[0]] : [];
     this.selectedRole = this.user[0];
     this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
     const formConfig = this.filteredFormData.form;
@@ -107,6 +130,7 @@ export class DashboardPage implements OnInit {
     if(this.user){
       this.initialDuration();
     }
+ 
   }
 
   public headerConfig: any = {
@@ -167,6 +191,8 @@ export class DashboardPage implements OnInit {
         this.startDate = null;
         this.endDate = null;
     }
+
+   
     const startDateEpoch = this.startDate ? this.startDate.unix() : null;
     const endDateEpoch = this.endDate ? this.endDate.unix() : null;
     this.startDateEpoch = startDateEpoch;
@@ -180,8 +206,9 @@ export class DashboardPage implements OnInit {
 
   async handleRoleChange(e) {
     this.selectedRole = e.detail.value;
+    this.session_type = 'ALL';
    this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
-    this.filteredCards = this.filteredFormData?.bigNumbers || [];
+    this.filteredCards = this.filteredFormData|| [];
     if(this.filteredCards){
       this.bigNumberCount();
     }
@@ -195,12 +222,14 @@ export class DashboardPage implements OnInit {
   }
 
   async bigNumberCount(){
-    for (let element of this.filteredCards) {
+    for (let element of this.filteredCards[this.session_type].bigNumbers) {
       this.report_code = element.Url;
-      let value   =  await this.preparedUrl(element.value);
-      if(value){
-        element.value = value;
-      }
+      element.data.forEach(async (el:any) => {
+        let value   =  await this.preparedUrl(el.value);
+        if(value){
+          el.value = value[el.key] || 0;
+        }
+      })
     }
   }
   
@@ -220,7 +249,7 @@ export class DashboardPage implements OnInit {
         this.categories = event.detail.value;
         break;
     }
-
+   
     this.bigNumberCount();
     this.chartBody[this.selectedRole] ={};
     this.chartBody={};
@@ -331,16 +360,16 @@ export class DashboardPage implements OnInit {
       `report_code=${this.report_code}${queryParams}`;
     const resp = await this.reportData(params);
     if (value) {
-      return resp.data.count;
+      return resp.data;
     }
   }
   async prepareTableUrl(){
     const queryParams = `&report_role=${this.selectedRole}` +
     `&start_date=${this.startDateEpoch || ''}` +
     `&session_type=${this.session_type}` +
-    `&end_date=${this.endDateEpoch || ''}` ;
+    `&end_date=${this.endDateEpoch || ''}`;
   this.chartBody = { ...this.chartBodyConfig };
-  this.chartBody[this.selectedRole].tableUrl +=  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody[this.selectedRole].table_report_code +queryParams;
+  this.chartBody[this.selectedRole].tableUrl =  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody[this.selectedRole].table_report_code +queryParams;
   this.chartBody[this.selectedRole].headers = await this.apiService.setHeaders();
   }
   async prepareChartUrl(){
