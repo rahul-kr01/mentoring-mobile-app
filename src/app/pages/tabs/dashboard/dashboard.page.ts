@@ -305,7 +305,7 @@ export class DashboardPage implements OnInit {
       payload: {},
     };
     try {
-      let data: any = await this.apiService.get(config);
+      let data: any = await this.apiService.post(config);
       return data.result
     }
     catch (error) {
