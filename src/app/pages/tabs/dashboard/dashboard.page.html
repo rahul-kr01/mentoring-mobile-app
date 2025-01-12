@@ -24,8 +24,6 @@
           </ion-item>
         </ion-col>
       </ion-row>
-
-
       <ion-row>
         <ng-container  *ngFor="let card of filteredCards[session_type]?.bigNumbers">
         <ion-col [size]="card?.data.length > 2 ? 3 : 2" sizeXs="12" [sizeLg]="card?.data.length > 2 ? 4 : 6" style="padding: 0 !important;"  *ngFor="let data of card?.data" >
@@ -41,8 +39,8 @@
         </ng-container>
       </ion-row>
       <ion-row>
-        <ion-col *ngIf="chartBody[selectedRole]?.chartUrl && chartBody[selectedRole]?.headers">
-          <lib-bar-chart [url]="chartBody[selectedRole]?.chartUrl" [headers]="chartBody[selectedRole]?.headers" [legends]="chartBody[selectedRole]?.dataLabels" [sessionType]="session_type"></lib-bar-chart>
+        <ion-col *ngIf="chartBody?.chartUrl && chartBody?.headers">
+          <lib-bar-chart [url]="chartBody?.chartUrl" [headers]="chartBody?.headers" [legends]="chartBody[session_type]['chartConfig']"></lib-bar-chart>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -50,9 +48,9 @@
 
   <div class="tables inner-div-style">
     <ion-grid>
-      <ion-row *ngIf="chartBody[selectedRole]?.tableUrl">
-        <lib-table [url]="chartBody[selectedRole]?.tableUrl" [headers]="chartBody[selectedRole]?.headers" [showDownload]="true" [title]="chartBody[selectedRole]?.tableTitle"  style="width: 100%;"></lib-table>
+      <ion-row *ngIf="chartBody?.tableUrl">
+        <lib-table [url]="chartBody?.tableUrl" [headers]="chartBody?.headers" [showDownload]="true" [title]="chartBody?.tableTitle"  style="width: 100%;"></lib-table>
       </ion-row>
     </ion-grid>
   </div>
-</ion-content>
+</ion-content>  
