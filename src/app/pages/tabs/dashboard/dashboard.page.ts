@@ -48,60 +48,8 @@ export class DashboardPage implements OnInit {
   groupBy: any;
   chartBody: any = {};
   // this should be come from form confg.
-  chartBodyConfig :any= {
-    mentee: {
-      dataLabels: {"ALL":[{'private_session_enrolled':'Number of Private Sessions Enrolled', backgroundColor:"#832215"},
-        {'public_session_enrolled':'Number of Public Sessions Enrolled', backgroundColor:"#b94a3b"},
-        {'private_session_attended':'Number of Private Sessions Attended', backgroundColor:"#999999"},
-        {'public_session_attended':'Number of Public Sessions Attended', backgroundColor:"#858585"}],
-
-    "PUBLIC":[{'public_session_enrolled':'Number of Sessions Enrolled', backgroundColor:"#832215"}, {'public_session_attended':'Number of Sessions Attended', backgroundColor:"#999999"}], 
-    "PRIVATE":[{'private_session_enrolled':'Number of Sessions Enrolled', backgroundColor:"#832215"},
-      {'private_session_attended':'Number of  Sessions Attended', backgroundColor:"#999999"}
-    ]},
-      chartUrl:  "",
-      report_code:'split_of_sessions_enrolled_and_attended_by_user',
-      table_report_code:'mentee_session_details',
-      tableUrl:'',    
-      tableTitle:'Session Details',
-      headers : ''
-    },
-    mentor: {
-      dataLabels:  {"ALL":[{'private_sessions_created':'Number of Private Sessions Created/Assigned', backgroundColor:"#832215"},
-        {'public_sessions_created':'Number of Public Sessions Created/Assigned', backgroundColor:"#b94a3b"},
-        {'private_sessions_conducted':'Number of Private Sessions conducted', backgroundColor:"#999999"},
-        {'public_sessions_conducted':'Number of Public Sessions conducted', backgroundColor:"#858585"}],
-
-    "PUBLIC":[{'public_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"}, 
-      {'public_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"}], 
-    "PRIVATE":[{'private_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"},
-      {'private_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"},
-    ]},
-      chartUrl:'',
-      report_code:'split_of_sessions_conducted',
-      table_report_code:'mentoring_session_details',
-      tableUrl:'',
-      tableTitle:'Mentoring Session Details',
-      headers:''
-    },
-    session_manager: {
-      dataLabels:  {"ALL":[{'private_sessions_created':'Number Private Sessions created', backgroundColor:"#832215"},
-        {'public_sessions_created':'Number Public Sessions created', backgroundColor:"#b94a3b"},
-        {'private_sessions_conducted':'Number of Private Sessions conducted', backgroundColor:"#999999"},
-        {'public_sessions_conducted':'Number of Public Sessions conducted', backgroundColor:"#858585"}],
-    "PUBLIC":[{'public_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"}, 
-      {'public_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"}], 
-    "PRIVATE":[{'private_sessions_created':'Number of Sessions Created/Assigned', backgroundColor:"#832215"},
-      {'private_sessions_conducted':'Number of Sessions conducted', backgroundColor:"#999999"},
-    ]},
-      chartUrl:"",
-      report_code:'split_of_sessions_created_and_conducted',
-      table_report_code:'session_manger_session_details',
-      tableUrl:'',   
-      tableTitle:'Session details',
-      headers:''
-    },
-  }
+  // chartBodyConfig[this.selectedRole][this.session_type]
+  chartBodyConfig :any= {}
   constructor(
     private profile: ProfileService,
     private apiService: HttpService,
@@ -117,9 +65,6 @@ export class DashboardPage implements OnInit {
   async ngOnInit() {
     this.result = await this.reportFilterListApi();
     this.user = await this.getUserRole(this.result);
-    //  read this from form config
-    // this.chartBodyConfig = form data
-    this.chartBody = this.chartBodyConfig
     const bigNumberResult = await this.form.getForm(BIG_NUMBER_DASHBOARD_FORM);
     this.bigNumberFormData = _.get(bigNumberResult, 'data.fields');
     this.filteredCards = !this.filteredCards.length ? this.bigNumberFormData[this.user[0]] : [];
@@ -127,10 +72,12 @@ export class DashboardPage implements OnInit {
     this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
     const formConfig = this.filteredFormData.form;
     this.dynamicFormControls = formConfig?.controls || [];
+    this.session_type = 'ALL';
+    this.chartBodyConfig = this.filteredFormData;
+    this.chartBody = this.chartBodyConfig;
     if(this.user){
       this.initialDuration();
     }
- 
   }
 
   public headerConfig: any = {
@@ -138,12 +85,9 @@ export class DashboardPage implements OnInit {
     label: 'DASHBOARD_PAGE',
     headerColor: 'primary',
   };
-
-
   async downloadData() {
     this.tableDataDownload = true;
   }
-
 
   async initialDuration(){
     const today = moment();
@@ -214,6 +158,8 @@ export class DashboardPage implements OnInit {
     }
    
     this.updateFormData(this.result);
+    this.chartBodyConfig = await this.filteredFormData;
+    this.chartBody = this.chartBodyConfig;
     this.chartBody = {};
     setTimeout(() => { 
       this.prepareChartUrl();
@@ -251,7 +197,6 @@ export class DashboardPage implements OnInit {
     }
    
     this.bigNumberCount();
-    this.chartBody[this.selectedRole] ={};
     this.chartBody={};
     setTimeout(() => {  
     this.prepareChartUrl();
@@ -268,10 +213,8 @@ export class DashboardPage implements OnInit {
 
   transformData(firstObj: any, secondObj: any): any {
     const updatedFirstObj = JSON.parse(JSON.stringify(firstObj));
-
     updatedFirstObj.form.controls = updatedFirstObj.form.controls.map((control: any) => {
       const matchingEntityType = secondObj.entity_types[control.value];
-
       if (matchingEntityType) {
         return {
           ...control,
@@ -364,25 +307,30 @@ export class DashboardPage implements OnInit {
     }
   }
   async prepareTableUrl(){
+    this.chartBody.chartUrl ="";
     const queryParams = `&report_role=${this.selectedRole}` +
     `&start_date=${this.startDateEpoch || ''}` +
     `&session_type=${this.session_type}` +
     `&end_date=${this.endDateEpoch || ''}`;
   this.chartBody = { ...this.chartBodyConfig };
-  this.chartBody[this.selectedRole].tableUrl =  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody[this.selectedRole].table_report_code +queryParams;
-  this.chartBody[this.selectedRole].headers = await this.apiService.setHeaders();
+  setTimeout(() => {
+  this.chartBody.tableUrl =  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody.table_report_code +queryParams;
+    }, 10);
+  this.chartBody.headers = await this.apiService.setHeaders();
   }
   async prepareChartUrl(){
+    this.chartBody.chartUrl ="";
     const queryParams = `&report_role=${this.selectedRole}` +
     `&session_type=${this.session_type}` +
     `&start_date=${this.startDateEpoch || ''}` +
     `&end_date=${this.endDateEpoch || ''}` +
     `&entities_value=${this.categories || ''}` +
     `&groupBy=${this.groupBy}`;
-
   this.chartBody = { ...this.chartBodyConfig };
-  this.chartBody[this.selectedRole].chartUrl = `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` + 'report_code='+ this.chartBody[this.selectedRole].report_code + queryParams;
-  this.chartBody[this.selectedRole].headers = await this.apiService.setHeaders();
+  setTimeout(() => {
+  this.chartBody.chartUrl = `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` + 'report_code='+ this.chartBody.report_code + queryParams;
+  }, 10);
+  this.chartBody.headers = await this.apiService.setHeaders();
   }
 }
 
