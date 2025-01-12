@@ -294,7 +294,6 @@ export class DashboardPage implements OnInit {
 
 
   async preparedUrl(value?) {
-    console.log('prepare url :', this.categories)
     const queryParams = `&report_role=${this.selectedRole}` +
       `&session_type=${this.session_type}` +
       `&start_date=${this.startDateEpoch || ''}` +
