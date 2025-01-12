@@ -8,7 +8,7 @@ import { DashboardPage } from './dashboard.page';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-import { GenericTableModule } from 'generic-table';
+import { GenericTableModule } from 'sl-generic-table';
 import {GenericChartModule} from 'generic-chart';
 import { MatTableModule } from '@angular/material/table';
 import { MatOptionModule } from '@angular/material/core';
