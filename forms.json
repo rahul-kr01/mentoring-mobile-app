@@ -1571,6 +1571,24 @@
                   }
                 ]
               }
+            ],
+            "chartConfig": [
+              {
+                "private_session_enrolled": "Number of Private Sessions Enrolled",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_session_enrolled": "Number of Public Sessions Enrolled",
+                "backgroundColor": "#b94a3b"
+              },
+              {
+                "private_session_attended": "Number of Private Sessions Attended",
+                "backgroundColor": "#999999"
+              },
+              {
+                "public_session_attended": "Number of Public Sessions Attended",
+                "backgroundColor": "#858585"
+              }
             ]
           },
           "PUBLIC": {
@@ -1605,6 +1623,16 @@
                   }
                 ]
               }
+            ],
+            "chartConfig": [
+              {
+                "public_session_enrolled": "Number of Sessions Enrolled",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_session_attended": "Number of Sessions Attended",
+                "backgroundColor": "#999999"
+              }
             ]
           },
           "PRIVATE": {
@@ -1638,6 +1666,16 @@
                     }
                   }
                 ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "Number of Sessions Created/Assigned",
+                "backgroundColor": "#832215"
+              },
+              {
+                "private_sessions_conducted": "Number of Sessions conducted",
+                "backgroundColor": "#999999"
               }
             ]
           },
@@ -1704,7 +1742,13 @@
                 ]
               }
             ]
-          }
+          },
+          "chartUrl": "",
+          "report_code": "split_of_sessions_enrolled_and_attended_by_user",
+          "table_report_code": "mentee_session_details",
+          "tableUrl": "",
+          "tableTitle": "Session Details",
+          "headers": ""
         },
         "mentor": {
           "ALL": {
@@ -1779,6 +1823,24 @@
                   }
                 ]
               }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "Number of Private Sessions Created/Assigned",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_created": "Number of Public Sessions Created/Assigned",
+                "backgroundColor": "#b94a3b"
+              },
+              {
+                "private_sessions_conducted": "Number of Private Sessions conducted",
+                "backgroundColor": "#999999"
+              },
+              {
+                "public_sessions_conducted": "Number of Public Sessions conducted",
+                "backgroundColor": "#858585"
+              }
             ]
           },
           "PUBLIC": {
@@ -1812,6 +1874,16 @@
                     }
                   }
                 ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "public_sessions_created": "Number of Sessions Created/Assigned",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_conducted": "Number of Sessions conducted",
+                "backgroundColor": "#999999"
               }
             ]
           },
@@ -1847,6 +1919,16 @@
                   }
                 ]
               }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "Number of Sessions Created/Assigned",
+                "backgroundColor": "#832215"
+              },
+              {
+                "private_sessions_conducted": "Number of Sessions conducted",
+                "backgroundColor": "#999999"
+              }
             ]
           },
           "form": {
@@ -1912,7 +1994,13 @@
                 ]
               }
             ]
-          }
+          },
+          "chartUrl": "",
+          "report_code": "split_of_sessions_conducted",
+          "table_report_code": "mentoring_session_details",
+          "tableUrl": "",
+          "tableTitle": "Mentoring Session Details",
+          "headers": ""
         },
         "session_manager": {
           "ALL": {
@@ -1921,7 +2009,7 @@
                 "Url": "total_number_of_hours_of_mentoring_conducted",
                 "data": [
                   {
-                    "label": "Total number of hours of private mentoring conducted",
+                    "label": "Total hours of private mentoring conducted",
                     "key": "private_hours",
                     "value": "0",
                     "Meta": {
@@ -1931,7 +2019,7 @@
                     }
                   },
                   {
-                    "label": "Total number of hours of public mentoring conducted",
+                    "label": "Total hours of public mentoring conducted",
                     "key": "public_hours",
                     "value": "0",
                     "Meta": {
@@ -1941,7 +2029,7 @@
                     }
                   },
                   {
-                    "label": "Total number of hours of mentoring conducted",
+                    "label": "Total hours of mentoring conducted",
                     "key": "total_hours",
                     "value": "0",
                     "Meta": {
@@ -1966,7 +2054,7 @@
                     }
                   },
                   {
-                    "label": "Total hours of public  sessions created by SM",
+                    "label": "Total hours of public sessions created by SM",
                     "key": "total_public_hours",
                     "value": "0",
                     "Meta": {
@@ -1987,6 +2075,24 @@
                   }
                 ]
               }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "Number Private Sessions created",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_created": "Number Public Sessions created",
+                "backgroundColor": "#b94a3b"
+              },
+              {
+                "private_sessions_conducted": "Number of Private Sessions conducted",
+                "backgroundColor": "#999999"
+              },
+              {
+                "public_sessions_conducted": "Number of Public Sessions conducted",
+                "backgroundColor": "#858585"
+              }
             ]
           },
           "PUBLIC": {
@@ -1995,7 +2101,7 @@
                 "Url": "total_number_of_hours_of_mentoring_conducted",
                 "data": [
                   {
-                    "label": "Total number of hours of public mentoring conducted",
+                    "label": "Total hours of public mentoring conducted",
                     "key": "public_hours",
                     "value": "0",
                     "Meta": {
@@ -2021,6 +2127,16 @@
                   }
                 ]
               }
+            ],
+            "chartConfig": [
+              {
+                "public_sessions_created": "Number of Sessions Created/Assigned",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_conducted": "Number of Sessions conducted",
+                "backgroundColor": "#999999"
+              }
             ]
           },
           "PRIVATE": {
@@ -2029,8 +2145,8 @@
                 "Url": "total_number_of_hours_of_mentoring_conducted",
                 "data": [
                   {
-                    "label": "Total number of hours of mentoring conducted",
-                    "key": "total_hours",
+                    "label": "Total hours of private mentoring conducted",
+                    "key": "private_hours",
                     "value": "0",
                     "Meta": {
                       "color": "#fff",
@@ -2054,6 +2170,16 @@
                     }
                   }
                 ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "Number of Sessions Created/Assigned",
+                "backgroundColor": "#832215"
+              },
+              {
+                "private_sessions_conducted": "Number of Sessions conducted",
+                "backgroundColor": "#999999"
               }
             ]
           },
@@ -2120,7 +2246,13 @@
                 ]
               }
             ]
-          }
+          },
+          "chartUrl": "",
+          "report_code": "split_of_sessions_created_and_conducted",
+          "table_report_code": "session_manger_session_details",
+          "tableUrl": "",
+          "tableTitle": "Session details",
+          "headers": ""
         }
       }
     }

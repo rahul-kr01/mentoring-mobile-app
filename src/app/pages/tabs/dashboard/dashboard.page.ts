@@ -207,7 +207,8 @@ export class DashboardPage implements OnInit {
   async handleRoleChange(e) {
     this.selectedRole = e.detail.value;
     this.session_type = 'ALL';
-   this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
+    this.categories = '';
+    this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
     this.filteredCards = this.filteredFormData|| [];
     if(this.filteredCards){
       this.bigNumberCount();
@@ -350,6 +351,7 @@ export class DashboardPage implements OnInit {
 
 
   async preparedUrl(value?) {
+    console.log('prepare url :', this.categories)
     const queryParams = `&report_role=${this.selectedRole}` +
       `&session_type=${this.session_type}` +
       `&start_date=${this.startDateEpoch || ''}` +
