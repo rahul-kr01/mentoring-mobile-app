@@ -201,6 +201,7 @@ export class DashboardPage implements OnInit {
     this.chartBody={};
     setTimeout(() => {  
     this.prepareChartUrl();
+    this.prepareTableUrl();
     },100)
   }
 
