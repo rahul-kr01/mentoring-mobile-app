@@ -141,7 +141,6 @@ export class DashboardPage implements OnInit {
     const endDateEpoch = this.endDate ? this.endDate.unix() : null;
     this.startDateEpoch = startDateEpoch;
     this.endDateEpoch = endDateEpoch;
-    this.chartBody = {};
       setTimeout(() => {
        this.bigNumberCount();
        this.prepareChartUrl();
@@ -161,7 +160,6 @@ export class DashboardPage implements OnInit {
     this.updateFormData(this.result);
     this.chartBodyConfig = await this.filteredFormData;
     this.chartBody = this.chartBodyConfig;
-    this.chartBody = {};
     setTimeout(() => { 
       this.prepareChartUrl();
       this.prepareTableUrl();
@@ -198,10 +196,8 @@ export class DashboardPage implements OnInit {
     }
    
     this.bigNumberCount();
-    this.chartBody={};
     setTimeout(() => {  
     this.prepareChartUrl();
-    this.prepareTableUrl();
     },100)
   }
 
@@ -309,15 +305,13 @@ export class DashboardPage implements OnInit {
     }
   }
   async prepareTableUrl(){
-    this.chartBody.chartUrl ="";
     const queryParams = `&report_role=${this.selectedRole}` +
     `&start_date=${this.startDateEpoch || ''}` +
     `&session_type=${this.session_type}` +
     `&end_date=${this.endDateEpoch || ''}`;
-  this.chartBody = { ...this.chartBodyConfig };
+  this.chartBody.tableUrl = this.chartBodyConfig.tableUrl;
   setTimeout(() => {
-  this.chartBody.tableUrl =  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody.table_report_code +queryParams;
-    }, 10);
+  this.chartBody.tableUrl =  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody.table_report_code +queryParams;}, 10);
   this.chartBody.headers = await this.apiService.setHeaders();
   }
   async prepareChartUrl(){
@@ -328,7 +322,7 @@ export class DashboardPage implements OnInit {
     `&end_date=${this.endDateEpoch || ''}` +
     `&entities_value=${this.categories || ''}` +
     `&groupBy=${this.groupBy}`;
-  this.chartBody = { ...this.chartBodyConfig };
+  this.chartBody.chartUrl = this.chartBodyConfig.chartUrl;
   setTimeout(() => {
   this.chartBody.chartUrl = `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` + 'report_code='+ this.chartBody.report_code + queryParams;
   }, 10);
